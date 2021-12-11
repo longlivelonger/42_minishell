@@ -6,17 +6,19 @@
 #    By: sbronwyn <sbronwyn@student.21-school.ru>   +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/12/10 18:11:01 by sbronwyn          #+#    #+#              #
-#    Updated: 2021/12/10 18:11:03 by sbronwyn         ###   ########.fr        #
+#    Updated: 2021/12/11 14:56:17 by sbronwyn         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = minishell
 
 CC = gcc
-CFLAGS = -Wall -Wextra -Werror
-LIBFLAGS= -Llibft -lft -lreadline
+CFLAGS = -Wall -Wextra -Werror -I/usr/local/Cellar/readline/8.1.1/include
+LIBFLAGS= -Llibft -lft \
+	-L/usr/local/Cellar/readline/8.1.1/lib -lreadline
 
-SRC = main.c
+SRC = main.c \
+	signal.c
 
 LIBFT=libft/libft.a
 MAKE_LIBFT=make -C libft
@@ -43,4 +45,7 @@ fclean: clean
 
 re: fclean all
 
-.PHONY: all re clean fclean
+install:
+	brew install readline
+
+.PHONY: all re clean fclean install

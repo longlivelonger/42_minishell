@@ -1,28 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
+/*   signal.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sbronwyn <sbronwyn@student.21-school.ru>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/12/10 16:54:44 by sbronwyn          #+#    #+#             */
-/*   Updated: 2021/12/11 15:02:46 by sbronwyn         ###   ########.fr       */
+/*   Created: 2021/12/11 14:32:47 by sbronwyn          #+#    #+#             */
+/*   Updated: 2021/12/11 15:03:20 by sbronwyn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINISHELL_H
-# define MINISHELL_H
+#include "minishell.h"
 
-# include <stdio.h>
-# include <readline/readline.h>
-# include <readline/history.h>
-# include <unistd.h>
-# include <signal.h>
+static void	sigint_handler(int sig)
+{
+	if (sig != SIGINT)
+		return ;
+	write(1, "\n", 1);
+	rl_replace_line("", 0);
+	rl_on_new_line();
+	rl_redisplay();
+}
 
-# include "libft/libft.h"
-
-void	run_command(char *command);
-
-void	set_readline_signals(void);
-
-#endif
+void	set_readline_signals(void)
+{
+	signal(SIGINT, &sigint_handler);
+	signal(SIGQUIT, SIG_IGN);
+}
