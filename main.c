@@ -6,7 +6,7 @@
 /*   By: sbronwyn <sbronwyn@student.21-school.ru>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/09 15:17:42 by sbronwyn          #+#    #+#             */
-/*   Updated: 2021/12/11 15:06:36 by sbronwyn         ###   ########.fr       */
+/*   Updated: 2021/12/11 15:53:12 by sbronwyn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,8 @@
 
 // void	run_command(char *command)
 // {
-// 	printf("%s\n", command);
+// 	// printf("%s\n", command);
+// 	builtin_echo(ft_split(command, ' '));
 // }
 
 int	main(int argc, char **argv)

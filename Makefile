@@ -6,7 +6,7 @@
 #    By: sbronwyn <sbronwyn@student.21-school.ru>   +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/12/10 18:11:01 by sbronwyn          #+#    #+#              #
-#    Updated: 2021/12/11 14:56:17 by sbronwyn         ###   ########.fr        #
+#    Updated: 2021/12/11 15:44:03 by sbronwyn         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,7 +18,7 @@ LIBFLAGS= -Llibft -lft \
 	-L/usr/local/Cellar/readline/8.1.1/lib -lreadline
 
 SRC = main.c \
-	signal.c
+	signal.c builtins.c
 
 LIBFT=libft/libft.a
 MAKE_LIBFT=make -C libft
