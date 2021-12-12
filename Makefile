@@ -12,11 +12,16 @@
 
 NAME = minishell
 
-CC = gcc
+CC = clang
 CFLAGS = -Wall -Wextra -Werror
 LIBFLAGS= -Llibft -lft
 
-SRC = main.c
+SRC_DWEEPER = build_syntax_tree.c split_to_tokens.c execute_command.c executor_utils.c parser_memory_cleanup.c
+
+SRC = main.c $(SRC_DWEEPER)
+
+SRC_TEST = execution_checker.c $(SRC_DWEEPER)
+NAME_TEST = test
 
 LIBFT=libft/libft.a
 MAKE_LIBFT=make -C libft
@@ -27,7 +32,7 @@ all: $(NAME)
 $(NAME): $(SRC:.c=.o) $(LIBFT)
 	$(CC) $(CFLAGS) $(LIBFLAGS) -o $(NAME) $(SRC:.c=.o)
 
-%.o: %.c minishell.h
+%.o: %.c minishell.h stree.h tokens.h
 	$(CC) $(CFLAGS) -c -o $@ $<
 
 clean:
@@ -36,6 +41,14 @@ clean:
 
 $(LIBFT):
 	$(MAKE_LIBFT) bonus
+
+test: $(SRC_TEST:.c=.o) $(LIBFT)
+	$(CC) $(CFLAGS) -o $(NAME_TEST) $(SRC_TEST:.c=.o) $(LIBFLAGS)
+
+tclean:
+	$(MAKE_LIBFT) fclean
+	$(RM) $(SRC_TEST:.c=.o)
+	$(RM) $(NAME_TEST)
 
 fclean: clean
 	$(MAKE_LIBFT) fclean
