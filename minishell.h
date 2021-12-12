@@ -6,7 +6,7 @@
 /*   By: sbronwyn <sbronwyn@student.21-school.ru>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/10 16:54:44 by sbronwyn          #+#    #+#             */
-/*   Updated: 2021/12/11 15:26:17 by sbronwyn         ###   ########.fr       */
+/*   Updated: 2021/12/12 12:24:26 by sbronwyn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,8 @@ void	run_command(char *command);
 
 void	set_readline_signals(void);
 
+int		is_builtin(char **args);
 void	builtin_echo(char **args);
+void	builtin_cd(char **args);
 
 #endif
