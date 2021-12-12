@@ -88,9 +88,12 @@ int	parse_n_execute(char *str)
 		return (-1);
 	cl_root = parse_command_line(token_list);
 	if (!cl_root)
+	{
+		free_token_list(token_list);
 		return (-1);
+	}
 	ret = execute_syntax_tree(cl_root);
-	if (ret)
-		return (-1);
-	return (0);
+	free_token_list(token_list);
+	free_syntax_tree(cl_root);
+	return (ret);
 }
