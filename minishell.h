@@ -1,16 +1,38 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   minishell.h                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: sbronwyn <sbronwyn@student.21-school.ru>   +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/12/10 16:54:44 by sbronwyn          #+#    #+#             */
+/*   Updated: 2021/12/12 16:12:27 by sbronwyn         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef MINISHELL_H
 # define MINISHELL_H
+
+# include <stdio.h>
+# include <readline/readline.h>
+# include <readline/history.h>
+# include <unistd.h>
+# include <signal.h>
+# include <fcntl.h>
+# include <sys/wait.h>
+# include <sys/stat.h>
+# include <sys/types.h>
 
 # include "libft/libft.h"
 # include "syntax_tree.h"
 # include "tokens.h"
-# include <stdio.h>
-# include <sys/types.h>
-# include <unistd.h>
-# include <fcntl.h>
-# include <sys/wait.h>
-# include <sys/stat.h>
 
 void	run_command(char *command);
+
+void	set_readline_signals(void);
+
+int		is_builtin(char **args);
+void	builtin_echo(char **args);
+void	builtin_cd(char **args);
 
 #endif
