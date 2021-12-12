@@ -6,7 +6,7 @@
 /*   By: sbronwyn <sbronwyn@student.21-school.ru>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/10 16:54:44 by sbronwyn          #+#    #+#             */
-/*   Updated: 2021/12/12 16:12:27 by sbronwyn         ###   ########.fr       */
+/*   Updated: 2021/12/12 16:27:03 by sbronwyn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,6 @@
 # include "libft/libft.h"
 # include "syntax_tree.h"
 # include "tokens.h"
-
-void	run_command(char *command);
 
 void	set_readline_signals(void);
 
