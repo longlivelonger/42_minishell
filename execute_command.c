@@ -5,17 +5,24 @@ static pid_t	launch_command(t_com *command, int fd_in, int fd_out)
 {
 	pid_t	fork_return;
 
-	fd_in = ext_open(command->in, fd_in, 0);
-	fd_out = ext_open(command->out, fd_out, 1);
-	if ((fork_return = fork()) == -1)
-		perror("fork");
-	else if (fork_return == 0)
+	fd_in = ext_open(command->in, fd_in, 0, command->in_flag, command->out_flag);
+	fd_out = ext_open(command->out, fd_out, 1, command->in_flag, command->out_flag);
+	if ((fork_return = find_command(&command->command_path, command->args_array)) == -1)
+		printf("%s: command not found\n", command->command_path);
+	else if (!fork_return)
+		run_builtin(command->args_array);
+	else
 	{
-		//ext_pipe_close(pipe_in, 1);
-		//ext_pipe_close(pipe_out, 0);
-		execve(command->command_path, command->args_array, NULL);
-		perror(command->command_path);
-		exit(1);
+		if ((fork_return = fork()) == -1)
+			perror("fork");
+		else if (fork_return == 0)
+		{
+			//ext_pipe_close(pipe_in, 1);
+			//ext_pipe_close(pipe_out, 0);
+			execve(command->command_path, command->args_array, NULL);
+			perror(command->command_path);
+			exit(1);
+		}
 	}
 	ext_close(fd_in);
 	ext_close(fd_out);
