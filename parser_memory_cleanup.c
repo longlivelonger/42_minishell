@@ -28,6 +28,8 @@ static t_job	*free_job(t_job *job)
 	//	free(job->com->out);
 	if (job->com->args_array)
 		free(job->com->args_array);
+	if (job->com)
+		free(job->com);
 	temp_job = job->next_job;
 	free(job);
 	return (temp_job);
@@ -48,5 +50,6 @@ void	free_syntax_tree(t_cl *cl)
 			free_syntax_tree(cl->and_cl);
 		if (cl->semicolon_cl)
 			free_syntax_tree(cl->semicolon_cl);
+		free(cl);
 	}
 }
