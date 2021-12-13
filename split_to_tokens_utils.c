@@ -37,10 +37,10 @@ int	expand_tokens(t_list *token_list)
 	{
 		if (((t_token *)token_list->content)->type == WORD)
 		{
-			
+			;
 		}
 	}
-	
+	return (0);
 }
 
 int	strip_quotes(t_list *token_list)
