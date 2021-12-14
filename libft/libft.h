@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sbronwyn <sbronwyn@student.21-school.ru    +#+  +:+       +#+        */
+/*   By: sbronwyn <sbronwyn@student.21-school.ru>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/04 14:49:16 by sbronwyn          #+#    #+#             */
-/*   Updated: 2021/11/04 15:45:09 by sbronwyn         ###   ########.fr       */
+/*   Updated: 2021/12/14 15:32:38 by sbronwyn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,7 @@ void		ft_putstr_fd(char *s, int fd);
 void		ft_putendl_fd(char *s, int fd);
 void		ft_putnbr_fd(int n, int fd);
 char		**ft_split(char const *s, char c);
+int			ft_strcmp(const char *s1, const char *s2);
 
 t_list		*ft_lstnew(void *content);
 void		ft_lstadd_front(t_list **lst, t_list *new);
