@@ -18,7 +18,12 @@
 # define SEMICOLON ';'
 # define AMPERSAND '&'
 # define REDIR_TO '>'
+# define REDIR_TO_APP 'G'
 # define REDIR_FROM '<'
+# define REDIR_FROM_UNT 'L'
+# define S_QUOTE 39
+# define D_QUOTE '"'
+# define ENV '$'
 
 typedef struct	s_token
 {
@@ -27,6 +32,7 @@ typedef struct	s_token
 }			t_token;
 
 t_list	*split_to_tokens(char *str);
+int		check_quoted_sequence(char* str);
 void	free_token_list(t_list *tl);
 
 #endif

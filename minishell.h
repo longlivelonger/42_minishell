@@ -6,7 +6,7 @@
 /*   By: sbronwyn <sbronwyn@student.21-school.ru>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/10 16:54:44 by sbronwyn          #+#    #+#             */
-/*   Updated: 2021/12/15 17:21:10 by sbronwyn         ###   ########.fr       */
+/*   Updated: 2021/12/15 17:32:39 by sbronwyn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@
 # include <sys/wait.h>
 # include <sys/stat.h>
 # include <sys/types.h>
+# include <dirent.h>
 
 # include "libft/libft.h"
 # include "syntax_tree.h"

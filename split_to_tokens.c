@@ -24,16 +24,25 @@ static t_token	*create_token(char *value, char type)
 	return (new_token);
 }
 
-static int	get_word(char **str, char **dst)
+static int	get_word(char **str, char **dst, char	*token_type)
 {
 	int		count;
+	int		is_quoted;
 	char	*new_word;
 
 	count = 0;
+	*token_type = WORD;
+	is_quoted = 0;
 	while(*(*str + count) != '\0' && *(*str + count) != '|' && *(*str + count) != '>' &&
-			*(*str + count) != '<' && *(*str + count) != '"' && *(*str + count) != 39
-			&& *(*str + count) != ' ')
+			*(*str + count) != '<' && *(*str + count) != ' ')
 	{
+		if (*(*str + count) == '"' || *(*str + count) == 39)
+			is_quoted = check_quoted_sequence(*str + count);
+		if (is_quoted)
+		{
+			count += is_quoted;
+			//*token_type = *(*str + count);
+		}
 		count++;
 	}
 	new_word = malloc(sizeof(char) * (count + 1));
@@ -42,6 +51,33 @@ static int	get_word(char **str, char **dst)
 	ft_strlcpy(new_word, *str, count + 1);
 	*dst = new_word;
 	return (count);
+}
+
+char	check_special_symbol(char** str)
+{
+	if (**str == '|')
+		return ('|');
+	else if (**str == '$')
+		return (ENV);
+	//else if (**str == 39)
+	//	return (S_QUOTE);
+	//else if (**str == '"')
+	//	return (D_QUOTE);
+	else if (**str == '<')
+	{
+		if (*(*str + 1) == '<')
+			return (REDIR_FROM_UNT);
+		else
+			return (REDIR_FROM);
+	}
+	else if (**str == '>')
+	{
+		if (*(*str + 1) == '>')
+			return (REDIR_TO_APP);
+		else
+			return (REDIR_TO);
+	}
+	return (0);
 }
 
 static t_list	*get_token(char **str)
@@ -55,16 +91,11 @@ static t_list	*get_token(char **str)
 	value = NULL;
 	while (**str == ' ' || **str == '	')
 		(*str)++;
-	if (**str == '|')
-		token_type = '|';
-	else if (**str == '<')
-		token_type = REDIR_FROM;
-	else if (**str == '>')
-		token_type = REDIR_TO;
-	else
+	token_type = check_special_symbol(str);
+	if (!token_type)
 	{
-		count = get_word(str, &value);
-		token_type = WORD;
+		count = get_word(str, &value, &token_type);
+		//token_type = WORD;
 	}
 	*str += count;
 	new_token = create_token(value, token_type);

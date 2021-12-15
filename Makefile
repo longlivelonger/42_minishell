@@ -17,7 +17,8 @@ CFLAGS = -Wall -Wextra -Werror -I/usr/local/Cellar/readline/8.1.1/include
 LIBFLAGS= -Llibft -lft \
 	-L/usr/local/Cellar/readline/8.1.1/lib -lreadline
 
-SRC_DWEEPER = build_syntax_tree.c split_to_tokens.c execute_command.c executor_utils.c parser_memory_cleanup.c
+SRC_DWEEPER = build_syntax_tree.c split_to_tokens.c execute_command.c \
+	executor_utils.c parser_memory_cleanup.c split_to_tokens_utils.c find_command.c
 
 SRC = main.c $(SRC_DWEEPER) \
 	signal.c builtins.c builtins2.c env.c env_utils.c
@@ -32,7 +33,7 @@ RM = rm -rf
 all: $(NAME)
 
 $(NAME): $(SRC:.c=.o) $(LIBFT)
-	$(CC) $(CFLAGS) $(LIBFLAGS) -o $(NAME) $(SRC:.c=.o)
+	$(CC) $(CFLAGS) -o $(NAME) $(SRC:.c=.o) $(LIBFLAGS)
 
 %.o: %.c minishell.h stree.h tokens.h Makefile
 	$(CC) $(CFLAGS) -c -o $@ $<
