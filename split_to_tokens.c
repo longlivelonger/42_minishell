@@ -21,28 +21,35 @@ static t_token	*create_token(char *value, char type)
 		return (NULL);
 	new_token->value = value;
 	new_token->type = type;
+	new_token->flag = 0;
 	return (new_token);
 }
 
-static int	get_word(char **str, char **dst, char	*token_type)
+static int	get_word(char **str, char **dst, char	*token_flag)
 {
 	int		count;
+	int		env_count;
 	int		is_quoted;
 	char	*new_word;
+	char	term_symbol;
 
 	count = 0;
-	*token_type = WORD;
+	env_count = 0;
+	*token_flag = 0;
 	is_quoted = 0;
-	while(*(*str + count) != '\0' && *(*str + count) != '|' && *(*str + count) != '>' &&
-			*(*str + count) != '<' && *(*str + count) != ' ')
+	term_symbol = '\0';
+	while(*(*str + count) != '\0' && (term_symbol || (*(*str + count) != '|' && *(*str + count) != '>' &&
+			*(*str + count) != '<' && *(*str + count) != ' ' && *(*str + count) != '	')))
 	{
 		if (*(*str + count) == '"' || *(*str + count) == 39)
-			is_quoted = check_quoted_sequence(*str + count);
-		if (is_quoted)
 		{
-			count += is_quoted;
-			//*token_type = *(*str + count);
+			if (*(*str + count) == term_symbol)
+				term_symbol = '\0';
+			else if (!term_symbol)
+				term_symbol = check_quoted_sequence(*str + count);
 		}
+		else if (*(*str + count) == '$' && term_symbol != 39)
+			env_count += count_env_value(*str, &count);
 		count++;
 	}
 	new_word = malloc(sizeof(char) * (count + 1));
@@ -85,6 +92,7 @@ static t_list	*get_token(char **str)
 	t_token	*new_token;
 	char	token_type;
 	char	*value;
+	int		token_flag;
 	int		count;
 
 	count = 1;
@@ -94,8 +102,8 @@ static t_list	*get_token(char **str)
 	token_type = check_special_symbol(str);
 	if (!token_type)
 	{
-		count = get_word(str, &value, &token_type);
-		//token_type = WORD;
+		count = get_word(str, &value, &token_flag);
+		token_type = WORD;
 	}
 	*str += count;
 	new_token = create_token(value, token_type);

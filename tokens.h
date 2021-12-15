@@ -29,10 +29,14 @@ typedef struct	s_token
 {
 	char	*value;
 	char	type;
+	int		flag;
 }			t_token;
 
 t_list	*split_to_tokens(char *str);
-int		check_quoted_sequence(char* str);
+int		get_env_key(char *str);
+int		count_env_value(char *key, int *count);
+char	*find_env_value(char *key, int key_len, char **env, int *env_value_len);
+char	check_quoted_sequence(char* str);
 void	free_token_list(t_list *tl);
 
 #endif
