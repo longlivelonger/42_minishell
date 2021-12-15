@@ -6,7 +6,7 @@
 #    By: sbronwyn <sbronwyn@student.21-school.ru>   +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/12/10 18:11:01 by sbronwyn          #+#    #+#              #
-#    Updated: 2021/12/14 15:40:03 by sbronwyn         ###   ########.fr        #
+#    Updated: 2021/12/15 17:25:00 by sbronwyn         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,7 +20,7 @@ LIBFLAGS= -Llibft -lft \
 SRC_DWEEPER = build_syntax_tree.c split_to_tokens.c execute_command.c executor_utils.c parser_memory_cleanup.c
 
 SRC = main.c $(SRC_DWEEPER) \
-	signal.c builtins.c builtins2.c env.c
+	signal.c builtins.c builtins2.c env.c env_utils.c
 
 SRC_TEST = execution_checker.c $(SRC_DWEEPER)
 NAME_TEST = test
