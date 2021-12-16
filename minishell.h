@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sbronwyn <sbronwyn@student.21-school.ru>   +#+  +:+       +#+        */
+/*   By: sbronwyn <sbronwyn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/10 16:54:44 by sbronwyn          #+#    #+#             */
-/*   Updated: 2021/12/15 17:32:39 by sbronwyn         ###   ########.fr       */
+/*   Updated: 2021/12/16 14:58:51 by sbronwyn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,11 +37,14 @@ typedef struct s_kv
 typedef struct s_global
 {
 	t_list	*env;
+	pid_t	current_pid;
+	int		exit_status;
 }	t_global;
 
 t_global	g_global;
 
 void	set_readline_signals(void);
+void	set_exec_signals(void);
 
 int		is_builtin(char **args);
 void	run_builtin(char **args);

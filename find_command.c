@@ -111,6 +111,6 @@ int	find_command(char **path_name, char **com_name)
 	{
 		if (is_builtin(com_name))
 			return (0);
-		return (search_in_path(path_name, "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin"));	
+		return (search_in_path(path_name, get_env("PATH")));	
 	}
 }
