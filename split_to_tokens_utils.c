@@ -12,21 +12,21 @@
 
 #include "minishell.h"
 
-int	check_quoted_sequence(char* str)
+char	check_quoted_sequence(char* str)
 {
-	int		local_count;
+	//int		local_count;
 	char	q_type;
 
-	local_count = 0;
+	//local_count = 0;
 	q_type = *str;
 	while(*str)
 	{
-		local_count++;
+		//local_count++;
 		str++;
 		if (*str == q_type)
-			return (local_count);
+			return (q_type);
 	}
-	return (0);
+	return ('\0');
 }
 
 int	check_syntax(t_list *token_list);
@@ -39,6 +39,7 @@ int	expand_tokens(t_list *token_list)
 		{
 			;
 		}
+		token_list = token_list->next;
 	}
 	return (0);
 }
@@ -54,3 +55,24 @@ int	strip_quotes(t_list *token_list)
 	return (0);
 }
 
+int	count_env_value(char *key, int *count)
+{
+	int	key_len;
+	int	value_len;
+	char	*fake_env[3];
+
+	fake_env[0] = "PATH=/usr/bin:/123/123:test";
+	fake_env[1] = "test=proverka123";
+	fake_env[2] = "op=opaopaopapapa";
+	key_len = *count;
+	(*count)++;
+	while ((key + *count) && ((*(key + *count) >=  97 && *(key + *count) <= 122) ||
+		(*(key + *count) >=  65 && *(key + *count) <= 90)))
+		(*count)++;
+	if (key_len == 0)
+		return (0);
+	if (!find_env_value(key, key_len, fake_env, &value_len))
+		return (0);
+	else
+		return (value_len);
+}

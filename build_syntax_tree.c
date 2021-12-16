@@ -34,28 +34,42 @@ static void	build_command(char *str, char **com_path, char ***args_array)
 	}
 }
 
+static t_com	*init_command()
+{
+	t_com	*new_command;
+
+	new_command = malloc(sizeof(t_com));
+	new_command->command_path = NULL;
+	new_command->in = NULL;
+	new_command->out = NULL;
+	new_command->in_flag = 0;
+	new_command->out_flag = O_TRUNC;
+	return (new_command);
+}
+
 static t_com	*parse_command(t_list *token_list, int max_count)
 {
 	t_com	*new_command;
 	int		count;
 
 	count = -1;
-	new_command = malloc(sizeof(t_com));
-	new_command->command_path = NULL;
-	new_command->in = NULL;
-	new_command->out = NULL;
+	new_command = init_command();
 	while (++count < max_count)
 	{
-		if (((t_token *)token_list->content)->type == '>')
+		if (((t_token *)token_list->content)->type == '>' || ((t_token *)token_list->content)->type == 'G')
 		{
 			token_list = token_list->next;
 			new_command->out = ((t_token *)token_list->content)->value;
+			if (((t_token *)token_list->content)->type == 'G')
+				new_command->out_flag = O_APPEND;
 			count++;
 		}
-		else if (((t_token *)token_list->content)->type == '<')
+		else if (((t_token *)token_list->content)->type == '<' || ((t_token *)token_list->content)->type == 'L')
 		{
 			token_list = token_list->next;
 			new_command->in = ((t_token *)token_list->content)->value;
+			if (((t_token *)token_list->content)->type == 'L')
+				new_command->in_flag = 1;
 			count++;
 		}
 		else

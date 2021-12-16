@@ -9,6 +9,28 @@ int	get_env_key(char *str)
 	return (count);
 }
 
+char	*find_env_value(char *key, int key_len, char **env, int *env_value_len)
+{
+	int	env_key_len;
+
+	while (env)
+	{
+		env_key_len = get_env_key(*env);
+		if (env_key_len == key_len)
+		{
+			if (!ft_strncmp(key, *env, key_len))
+			{
+				*env_value_len = 0;
+				while (*(*env + env_key_len + *env_value_len + 1))
+					(*env_value_len)++;
+				return (*env);
+			}
+		}
+		env++;
+	}
+	return (NULL);
+}
+
 int	ext_close(int	fd)
 {
 	if (fd != -1)
