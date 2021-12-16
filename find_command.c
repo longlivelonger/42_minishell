@@ -71,6 +71,8 @@ static int	search_in_path(char** path_name, char* path)
 
 	dir_count = 0;
 	result = -1;
+	if (!path)
+		return (result);
 	while ((next_dir = get_dir_name(path, &dir_count)) && result)
 	{
 		dir = opendir(next_dir);
