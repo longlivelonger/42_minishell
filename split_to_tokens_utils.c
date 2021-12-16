@@ -57,13 +57,15 @@ int	strip_quotes(t_list *token_list)
 
 int	count_env_value(char *key, int *count)
 {
-	int	key_len;
-	int	value_len;
+	int		key_len;
+	int		value_len;
+	char	*key;
+	char	*value;
 	char	*fake_env[3];
 
-	fake_env[0] = "PATH=/usr/bin:/123/123:test";
-	fake_env[1] = "test=proverka123";
-	fake_env[2] = "op=opaopaopapapa";
+	//fake_env[0] = "PATH=/usr/bin:/123/123:test";
+	//fake_env[1] = "test=proverka123";
+	//fake_env[2] = "op=opaopaopapapa";
 	key_len = *count;
 	(*count)++;
 	while ((key + *count) && ((*(key + *count) >=  97 && *(key + *count) <= 122) ||
@@ -71,8 +73,14 @@ int	count_env_value(char *key, int *count)
 		(*count)++;
 	if (key_len == 0)
 		return (0);
-	if (!find_env_value(key, key_len, fake_env, &value_len))
-		return (0);
-	else
-		return (value_len);
+	key = ft_substr((key + *count), 0, key_len);
+	value = get_env(key);
+	value_len = 0;
+	if (value)
+	{
+		while (*(value + value_len))
+			value_len++;
+	}
+	free(key);
+	return (value_len);
 }

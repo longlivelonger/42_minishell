@@ -52,9 +52,10 @@ static int	get_word(char **str, char **dst, int *token_flag)
 			env_count += count_env_value(*str, &count);
 		count++;
 	}
-	new_word = malloc(sizeof(char) * (count + 1));
+	new_word = malloc(sizeof(char) * (count + 1 + env_count));
 	if (!new_word)
 		return (-1);
+	adv_str_write(new_word, *str);
 	ft_strlcpy(new_word, *str, count + 1);
 	*dst = new_word;
 	return (count);
