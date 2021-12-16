@@ -25,7 +25,7 @@ static t_token	*create_token(char *value, char type)
 	return (new_token);
 }
 
-static int	get_word(char **str, char **dst, char	*token_flag)
+static int	get_word(char **str, char **dst, int *token_flag)
 {
 	int		count;
 	int		env_count;

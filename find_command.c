@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-static int	ft_strcmp(char *str1, char *str2)
+static int	ft_strcmp_u(char *str1, char *str2)
 {
 	while (*str1 && *str2)
 	{
@@ -76,7 +76,7 @@ static int	search_in_path(char** path_name, char* path)
 		dir = opendir(next_dir);
 		while ((dir_info = readdir(dir)))
 		{
-			if(ft_strcmp(*path_name, dir_info->d_name))
+			if(ft_strcmp_u(*path_name, dir_info->d_name))
 			{
 				result = build_command_name(next_dir, path_name);
 				break;
