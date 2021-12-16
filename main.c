@@ -6,7 +6,7 @@
 /*   By: sbronwyn <sbronwyn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/09 15:17:42 by sbronwyn          #+#    #+#             */
-/*   Updated: 2021/12/16 14:59:24 by sbronwyn         ###   ########.fr       */
+/*   Updated: 2021/12/16 16:12:49 by sbronwyn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ int	main(int argc, char **argv)
 		command_line = readline("$ ");
 		if (command_line == 0)
 		{
-			// rl_clear_history();
+			rl_clear_history();
 			return (0);
 		}
 		if (command_line != 0 && ft_strlen(command_line) > 0)

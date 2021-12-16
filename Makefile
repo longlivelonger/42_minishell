@@ -6,15 +6,16 @@
 #    By: sbronwyn <sbronwyn@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/12/10 18:11:01 by sbronwyn          #+#    #+#              #
-#    Updated: 2021/12/16 14:02:07 by sbronwyn         ###   ########.fr        #
+#    Updated: 2021/12/16 16:20:54 by sbronwyn         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = minishell
 
 CC = clang
-CFLAGS = -Wall -Wextra -Werror
-LIBFLAGS= -Llibft -lft -lreadline
+CFLAGS = -Wall -Wextra -Werror -I/Users/$$USER/.brew/Cellar/readline/8.1.1/include
+LIBFLAGS= -Llibft -lft \
+	-L/Users/$$USER/.brew/Cellar/readline/8.1.1/lib -lreadline
 
 SRC_DWEEPER = build_syntax_tree.c split_to_tokens.c execute_command.c \
 	executor_utils.c parser_memory_cleanup.c split_to_tokens_utils.c find_command.c
