@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signal.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sbronwyn <sbronwyn@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sbronwyn <sbronwyn@student.21-school.ru>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/11 14:32:47 by sbronwyn          #+#    #+#             */
-/*   Updated: 2021/12/16 16:12:59 by sbronwyn         ###   ########.fr       */
+/*   Updated: 2021/12/17 11:11:37 by sbronwyn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,11 @@ static void	sigint_handler(int sig)
 	rl_redisplay();
 }
 
+static void	pass_signal(int sig)
+{
+	(void) sig;
+}
+
 void	set_readline_signals(void)
 {
 	signal(SIGINT, &sigint_handler);
@@ -30,6 +35,6 @@ void	set_readline_signals(void)
 
 void	set_exec_signals(void)
 {
-	signal(SIGINT, &sigint_handler);
-	signal(SIGQUIT, SIG_IGN);
+	signal(SIGINT, &pass_signal);
+	signal(SIGQUIT, &pass_signal);
 }
