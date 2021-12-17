@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: sbronwyn <sbronwyn@student.42.fr>          +#+  +:+       +#+         #
+#    By: sbronwyn <sbronwyn@student.21-school.ru>   +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/12/10 18:11:01 by sbronwyn          #+#    #+#              #
-#    Updated: 2021/12/16 16:20:54 by sbronwyn         ###   ########.fr        #
+#    Updated: 2021/12/17 09:57:42 by sbronwyn         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -61,5 +61,9 @@ re: fclean all
 
 install:
 	brew install readline
+
+home_link:
+	mkdir /Users/$$USER/.brew
+	ln -v -s /usr/local/Cellar /Users/$$USER/.brew/Cellar
 
 .PHONY: all re clean fclean install
