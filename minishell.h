@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sbronwyn <sbronwyn@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sbronwyn <sbronwyn@student.21-school.ru>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/10 16:54:44 by sbronwyn          #+#    #+#             */
-/*   Updated: 2021/12/16 14:58:51 by sbronwyn         ###   ########.fr       */
+/*   Updated: 2021/12/17 12:55:49 by sbronwyn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@
 # include <sys/wait.h>
 # include <sys/stat.h>
 # include <sys/types.h>
+# include <sys/param.h>
 # include <dirent.h>
 
 # include "libft/libft.h"
@@ -59,8 +60,10 @@ void	builtin_env(char **args);
 
 void	delete_env_content(void *content);
 void	print_sorted_env(void);
-t_kv	*create_env_variable(char *name, char *value);
+t_kv	*create_env_variable(char *str);
 
 char	*get_env(char *name);
+int		is_valid_env_key(char *name);
+void	delete_env_variable(char *name);
 
 #endif

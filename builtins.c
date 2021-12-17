@@ -6,7 +6,7 @@
 /*   By: sbronwyn <sbronwyn@student.21-school.ru>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/11 15:25:18 by sbronwyn          #+#    #+#             */
-/*   Updated: 2021/12/14 15:21:31 by sbronwyn         ###   ########.fr       */
+/*   Updated: 2021/12/17 11:40:13 by sbronwyn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ void	run_builtin(char **args)
 {
 	if (args == 0 || args[0] == 0)
 		return ;
+	g_global.exit_status = 0;
 	if (ft_strncmp(args[0], "echo", 5) == 0)
 		builtin_echo(args);
 	else if (ft_strncmp(args[0], "cd", 3) == 0)
@@ -74,21 +75,48 @@ void	builtin_echo(char **args)
 
 void	builtin_cd(char **args)
 {
+	char	*home;
+
 	if (args == 0 || args[0] == 0 || ft_strncmp(args[0], "cd", 3) != 0)
 		return ;
-	if (args[1] == 0 || chdir(args[1]) == -1)
-		return ;
+	if (args[1] == 0)
+	{
+		home = get_env("HOME");
+		if (home == 0)
+		{
+			write(2, "cd: HOME not set\n", 17);
+			g_global.exit_status = 1;
+		}
+		else if (chdir(home) == -1)
+		{
+			perror("cd");
+			g_global.exit_status = 1;
+		}
+	}
+	else if (chdir(args[1]) == -1)
+	{
+		perror("cd");
+		g_global.exit_status = 1;
+	}
 }
 
 void	builtin_pwd(char **args)
 {
 	char	*pwd;
 
-	if (args == 0 || args[0] == 0 || ft_strncmp(args[0], "pwd", 4) != 0)
+	if (args == 0 || args[0] == 0
+		|| ft_strncmp(args[0], "pwd", 4) != 0)
+	{
+		g_global.exit_status = 1;
 		return ;
+	}
 	pwd = getcwd(0, 0);
 	if (pwd == 0)
+	{
+		perror("pwd");
+		g_global.exit_status = 1;
 		return ;
+	}
 	ft_putstr_fd(pwd, 1);
 	write(1, "\n", 1);
 }

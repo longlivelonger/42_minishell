@@ -6,7 +6,7 @@
 /*   By: sbronwyn <sbronwyn@student.21-school.ru>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/14 15:36:57 by sbronwyn          #+#    #+#             */
-/*   Updated: 2021/12/15 17:20:52 by sbronwyn         ###   ########.fr       */
+/*   Updated: 2021/12/17 12:54:38 by sbronwyn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,10 +17,10 @@ void	delete_env_content(void *content)
 	t_kv	*var;
 
 	var = (t_kv *)content;
-	if (var->name != 0)
+	if (var != 0 && var->name != 0)
 		free(var->name);
-	if (var->value != 0)
-		free(var->value);
+	if (var != 0)
+		free(var);
 }
 
 static t_kv	**make_array_from_list(t_list *lst)
@@ -83,14 +83,19 @@ void	print_sorted_env(void)
 	free(arr);
 }
 
-t_kv	*create_env_variable(char *name, char *value)
+t_kv	*create_env_variable(char *str)
 {
 	t_kv	*var;
 
 	var = malloc(sizeof(*var));
 	if (var == 0)
 		return (0);
-	var->name = name;
-	var->value = value;
+	var->name = ft_strdup(str);
+	var->value = 0;
+	if (ft_strchr(var->name, '='))
+	{
+		var->value = ft_strchr(var->name, '=') + 1;
+		*ft_strchr(var->name, '=') = '\0';
+	}
 	return (var);
 }
