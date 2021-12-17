@@ -6,7 +6,7 @@
 /*   By: sbronwyn <sbronwyn@student.21-school.ru>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/10 16:54:44 by sbronwyn          #+#    #+#             */
-/*   Updated: 2021/12/17 12:55:49 by sbronwyn         ###   ########.fr       */
+/*   Updated: 2021/12/17 13:16:31 by sbronwyn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,6 @@ typedef struct s_kv
 typedef struct s_global
 {
 	t_list	*env;
-	pid_t	current_pid;
 	int		exit_status;
 }	t_global;
 
