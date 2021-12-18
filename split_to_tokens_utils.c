@@ -14,14 +14,11 @@
 
 char	check_quoted_sequence(char* str)
 {
-	//int		local_count;
 	char	q_type;
 
-	//local_count = 0;
 	q_type = *str;
 	while(*str)
 	{
-		//local_count++;
 		str++;
 		if (*str == q_type)
 			return (q_type);
@@ -31,56 +28,31 @@ char	check_quoted_sequence(char* str)
 
 int	check_syntax(t_list *token_list);
 
-int	expand_tokens(t_list *token_list)
-{
-	while (token_list)
-	{
-		if (((t_token *)token_list->content)->type == WORD)
-		{
-			;
-		}
-		token_list = token_list->next;
-	}
-	return (0);
-}
-
-int	strip_quotes(t_list *token_list)
-{
-	while (token_list)
-	{
-		if (((t_token *)token_list->content)->type == S_QUOTE ||
-			((t_token *)token_list->content)->type == D_QUOTE)
-		token_list = token_list->next;
-	}
-	return (0);
-}
 
 int	count_env_value(char *key, int *count)
 {
 	int		key_len;
 	int		value_len;
-	char	*key;
+	//char	*key_name;
 	char	*value;
-	char	*fake_env[3];
+	//char	*fake_env[3];
 
 	//fake_env[0] = "PATH=/usr/bin:/123/123:test";
 	//fake_env[1] = "test=proverka123";
 	//fake_env[2] = "op=opaopaopapapa";
-	key_len = *count;
-	(*count)++;
-	while ((key + *count) && ((*(key + *count) >=  97 && *(key + *count) <= 122) ||
-		(*(key + *count) >=  65 && *(key + *count) <= 90)))
-		(*count)++;
+	//(*count)++;
+	key_len = 0;
+	if ((key + key_len) && ((*(key +key_len) >=  48 && *(key + key_len) <= 57)))
+		return (1);
+	while ((key + key_len) && ((*(key +key_len) >=  97 && *(key + key_len) <= 122) ||
+		(*(key + key_len) >=  65 && *(key + key_len) <= 90)))
+		(key_len)++;
+	*count += key_len;
 	if (key_len == 0)
 		return (0);
-	key = ft_substr((key + *count), 0, key_len);
+	key = ft_substr(key, 0, key_len);
 	value = get_env(key);
-	value_len = 0;
-	if (value)
-	{
-		while (*(value + value_len))
-			value_len++;
-	}
+	value_len = ft_strlen_adpt(value);
 	free(key);
 	return (value_len);
 }

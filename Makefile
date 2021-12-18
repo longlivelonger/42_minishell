@@ -16,13 +16,13 @@ CC = clang
 CFLAGS = -Wall -Wextra -Werror
 LIBFLAGS= -Llibft -lft -lreadline
 
-SRC_DWEEPER = build_syntax_tree.c split_to_tokens.c execute_command.c \
-	executor_utils.c parser_memory_cleanup.c split_to_tokens_utils.c find_command.c
+SRC_DWEEPER = build_syntax_tree.c split_to_tokens.c execute_command.c executor_utils.c \
+		parser_memory_cleanup.c split_to_tokens_utils.c find_command.c parser_utils.c
 
 SRC = main.c $(SRC_DWEEPER) \
 	signal.c builtins.c builtins2.c env.c env_utils.c
 
-SRC_TEST = execution_checker.c $(SRC_DWEEPER)
+SRC_TEST = execution_checker.c $(SRC_DWEEPER) signal.c builtins.c builtins2.c env.c env_utils.c
 NAME_TEST = test
 
 LIBFT=libft/libft.a
@@ -45,7 +45,7 @@ $(LIBFT):
 	$(MAKE_LIBFT) bonus
 
 test: $(SRC_TEST:.c=.o) $(LIBFT)
-	$(CC) $(CFLAGS) -o $(NAME_TEST) $(SRC_TEST:.c=.o) $(LIBFLAGS)
+	$(CC) $(CFLAGS) -g -o $(NAME_TEST) $(SRC_TEST:.c=.o) $(LIBFLAGS)
 
 tclean:
 	$(MAKE_LIBFT) fclean

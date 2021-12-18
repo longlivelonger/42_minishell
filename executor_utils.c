@@ -64,6 +64,7 @@ int	ext_open(char *file, int fd, int end_to_open, int in_flag, int out_flag)
 {
 	int	temp_fd;
 
+	//(void)out_flag;
 	if (file)
 	{
 		temp_fd = fd;
@@ -78,6 +79,7 @@ int	ext_open(char *file, int fd, int end_to_open, int in_flag, int out_flag)
 		else
 		{
 			fd = open(file, O_WRONLY | O_CREAT | out_flag, S_IRUSR | S_IWUSR);
+			//fd = open(file, O_WRONLY | O_CREAT | O_APPEND, S_IRUSR | S_IWUSR);
 			dup2(fd, 1);
 			if (temp_fd != -1)
 				close(temp_fd);

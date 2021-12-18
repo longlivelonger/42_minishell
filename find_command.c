@@ -31,12 +31,17 @@ static char	*get_dir_name(char *path, int *count)
 	char	*dir_name;
 	int		start_count;
 
+	//printf("segahere\n");
 	start_count = *count;
 	if (!(*(path + *count)))
 		return (NULL);
 	while (*(path + *count) && *(path + *count) != ':')
+	{
 		(*count)++;
-	dir_name = malloc(sizeof(char) * (*count + 1));
+	}
+	//start_count = *count - start_count;
+	//printf("%d\n", start_count);
+	dir_name = malloc(sizeof(char) * (*count - start_count + 1));
 	if (!dir_name)
 		return (NULL);
 	ft_strlcpy(dir_name, path + start_count, *count - start_count + 1);
@@ -73,10 +78,10 @@ static int	search_in_path(char** path_name, char* path)
 	result = -1;
 	if (!path)
 		return (result);
-	while ((next_dir = get_dir_name(path, &dir_count)) && result)
+	while ((next_dir = get_dir_name(path, &dir_count)) && result != 1)
 	{
 		dir = opendir(next_dir);
-		while ((dir_info = readdir(dir)))
+		while (dir && (dir_info = readdir(dir)))
 		{
 			if(ft_strcmp_u(*path_name, dir_info->d_name))
 			{
@@ -113,6 +118,7 @@ int	find_command(char **path_name, char **com_name)
 	{
 		if (is_builtin(com_name))
 			return (0);
-		return (search_in_path(path_name, get_env("PATH")));	
+		return (search_in_path(path_name, get_env("PATH")));
+		//return (search_in_path(path_name, "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"));	
 	}
 }
