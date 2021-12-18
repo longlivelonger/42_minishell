@@ -34,6 +34,7 @@ static int	launch_job(t_job *current_job, int fd_stdout)
 	int		fd_pipe[2];
 	int		fd_pipe_out;
 	int		fd_pipe_in;
+	int		exit_status;
 	pid_t	command_pid;
 
 	fd_pipe_out = -1;
@@ -56,8 +57,13 @@ static int	launch_job(t_job *current_job, int fd_stdout)
 		command_pid = launch_command(current_job->com, fd_pipe_in, fd_pipe_out);
 		current_job = current_job->next_job;
 	}
-	waitpid(command_pid, NULL, 0);
-	return (0);
+	waitpid(command_pid, &exit_status, 0);
+	if (WIFEXITED(exit_status))
+		g_global.exit_status = WEXITSTATUS(exit_status);
+	else
+		g_global.exit_status = 0;
+	//printf("%d\n", exit_status);
+	return (g_global.exit_status);
 }
 
 int	execute_syntax_tree(t_cl *current_cl)
@@ -90,6 +96,8 @@ int	parse_n_execute(char *str)
 	t_cl	*cl_root;
 	int		ret;
 
+	if (!str)
+		return (0);
 	token_list = split_to_tokens(str);
 	if (!token_list)
 		return (-1);

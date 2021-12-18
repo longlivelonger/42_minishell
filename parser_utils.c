@@ -12,7 +12,19 @@
 
 #include "minishell.h"
 
-char	*extract_key(char *str)
+int	ft_strlen_adpt(char	*str)
+{
+	int	count;
+
+	if (!str)
+		return (0);
+	count = 0;
+	while (*(str + count))
+		count++;
+	return (count);
+}
+
+int	extract_key(char *str)
 {
 	int	count;
 
@@ -34,7 +46,12 @@ int	write_env_value(char *key, char *dst, int *dst_count)
 	//fake_env[1] = "test=proverka123";
 	//fake_env[2] = "op=opaopaopapapa";
 	key_len = 0;
-	//(*count)++;
+	if ((key + key_len) && (*(key +key_len) == '?'))
+	{
+		*(dst + *dst_count) = g_global.exit_status + '0';
+		(*dst_count)++;
+		return (1);
+	}
 	while ((key + key_len) && ((*(key + key_len) >=  97 && *(key + key_len) <= 122) ||
 		(*(key + key_len) >=  65 && *(key + key_len) <= 90)))
 		key_len++;
@@ -57,43 +74,33 @@ int	write_env_value(char *key, char *dst, int *dst_count)
 }
 
 
-adv_str_write(char *dst, char *src, int max_count)
+void	adv_str_write(char *str, char *dst, int max_count)
 {
 	int		count;
 	int		dst_count;
-	int		is_quoted;
-	char	*new_word;
 	char	term_symbol;
 
 	count = 0;
+	(void)max_count;
 	dst_count = 0;
-	*token_flag = 0;
-	is_quoted = 0;
 	term_symbol = '\0';
-
-	while(*(src + count) != '\0' && *(src + count) != ' ' && *(src + count) != '	')))
-{
-	if (*(src + count) == '"' || *(src + count) == 39)
+	while(*(str + count) && (term_symbol || (!check_special_symbol(&str) && *(str + count) != ' ' && *(str + count) != '	')))
 	{
-		if (*(src + count) == term_symbol)
-			term_symbol = '\0';
-		else if (!term_symbol)
+		if (*(str + count) == '"' || *(str + count) == 39)
 		{
-			term_symbol = check_quoted_sequence(*str + count);
-			if (!term_symol)
-			{
-				*(dst + dst_count) = *(src + count);
-				dst_count++;
-			}
+			if (*(str + count) == term_symbol)
+				term_symbol = '\0';
+			else if (!term_symbol)
+				term_symbol = check_quoted_sequence(str + count);
 		}
+		else if (*(str + count) == '$' && term_symbol != 39)
+			count += write_env_value(str + count + 1, dst, &dst_count);
+		else
+		{
+			*(dst + dst_count) = *(str + count);
+			dst_count++;
+		}
+		count++;
 	}
-	else if (*(src + count) == '$' && term_symbol != 39)
-		count += write_env_value(src + count + 1, dst, &dst_count);
-	else
-	{
-		*(dst + dst_count) = *(src + count);
-		dst_count++;
-	}
-	count++;
-	}
+	*(dst + dst_count) = '\0';
 }

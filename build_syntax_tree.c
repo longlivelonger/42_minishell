@@ -58,10 +58,12 @@ static t_com	*parse_command(t_list *token_list, int max_count)
 	{
 		if (((t_token *)token_list->content)->type == '>' || ((t_token *)token_list->content)->type == 'G')
 		{
-			token_list = token_list->next;
-			new_command->out = ((t_token *)token_list->content)->value;
 			if (((t_token *)token_list->content)->type == 'G')
 				new_command->out_flag = O_APPEND;
+			token_list = token_list->next;
+			new_command->out = ((t_token *)token_list->content)->value;
+			//printf("%d \n", new_command->out_flag);
+			//printf("%d \n", new_command->out_flag);
 			count++;
 		}
 		else if (((t_token *)token_list->content)->type == '<' || ((t_token *)token_list->content)->type == 'L')
@@ -89,6 +91,7 @@ static t_job	*parse_job(t_list *token_list, int max_count)
 	count = 0;
 	while (count < max_count && ((t_token *)temp->content)->type != '|')
 	{
+		//printf("%c\n", ((t_token *)temp->content)->type);
 		temp = temp->next;
 		count++;
 	}
