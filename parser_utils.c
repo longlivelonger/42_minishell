@@ -12,16 +12,31 @@
 
 #include "minishell.h"
 
-int	ft_strlen_adpt(char	*str)
+int	check_syntax(t_list *token_list)
 {
-	int	count;
+	char	lt;
+	int		is_err;
 
-	if (!str)
-		return (0);
-	count = 0;
-	while (*(str + count))
-		count++;
-	return (count);
+	lt = 0;
+	is_err = 0;
+	while (token_list && is_err != 1)
+	{
+		if (((t_token *)token_list->content)->type == '|' && (lt == '|' || !lt))
+			is_err = 1;
+		if ((lt == '>' || lt == '<' || lt == 'L' || lt == 'G')
+				&& ((t_token *)token_list->content)->type != 'W')
+			is_err = 1;
+		lt = ((t_token *)token_list->content)->type;
+		token_list = token_list->next;
+	}
+	if (is_err || (lt == '>' || lt == '<' || lt == 'L' || lt == 'G'))
+	{
+		is_err = 1;
+		write(2, "-bash: syntax error near unexpected token `", 43);
+		write(2, &lt, 1);
+		write(2, "'\n", 2);
+	}
+	return (is_err);
 }
 
 int	extract_key(char *str)
@@ -38,13 +53,8 @@ int	write_env_value(char *key, char *dst, int *dst_count)
 {
 	int		key_len;
 	int		value_len;
-	//char	*key;
 	char	*value;
-	//char	*fake_env[3];
 
-	//fake_env[0] = "PATH=/usr/bin:/123/123:test";
-	//fake_env[1] = "test=proverka123";
-	//fake_env[2] = "op=opaopaopapapa";
 	key_len = 0;
 	if ((key + key_len) && (*(key +key_len) == '?'))
 	{

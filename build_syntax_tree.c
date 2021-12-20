@@ -34,7 +34,7 @@ static void	build_command(char *str, char **com_path, char ***args_array)
 	}
 }
 
-static t_com	*init_command()
+static t_com	*init_command(void)
 {
 	t_com	*new_command;
 
@@ -56,26 +56,12 @@ static t_com	*parse_command(t_list *token_list, int max_count)
 	new_command = init_command();
 	while (++count < max_count)
 	{
-		if (((t_token *)token_list->content)->type == '>' || ((t_token *)token_list->content)->type == 'G')
-		{
-			if (((t_token *)token_list->content)->type == 'G')
-				new_command->out_flag = O_APPEND;
-			token_list = token_list->next;
-			new_command->out = ((t_token *)token_list->content)->value;
-			//printf("%d \n", new_command->out_flag);
-			//printf("%d \n", new_command->out_flag);
+		if (build_redirections(((t_token *)token_list->content)->type,
+				new_command, &token_list))
 			count++;
-		}
-		else if (((t_token *)token_list->content)->type == '<' || ((t_token *)token_list->content)->type == 'L')
-		{
-			token_list = token_list->next;
-			new_command->in = ((t_token *)token_list->content)->value;
-			if (((t_token *)token_list->content)->type == 'L')
-				new_command->in_flag = 1;
-			count++;
-		}
 		else
-			build_command(((t_token *)token_list->content)->value, &new_command->command_path, &new_command->args_array);
+			build_command(((t_token *)token_list->content)->value,
+				&new_command->command_path, &new_command->args_array);
 		token_list = token_list->next;
 	}
 	return (new_command);
@@ -91,7 +77,6 @@ static t_job	*parse_job(t_list *token_list, int max_count)
 	count = 0;
 	while (count < max_count && ((t_token *)temp->content)->type != '|')
 	{
-		//printf("%c\n", ((t_token *)temp->content)->type);
 		temp = temp->next;
 		count++;
 	}
@@ -114,7 +99,7 @@ t_cl	*parse_command_line(t_list *token_list)
 	temp = token_list;
 	count = 0;
 	while (temp && ((t_token *)temp->content)->type != ';'
-				&& ((t_token *)temp->content)->type != '&')
+		&& ((t_token *)temp->content)->type != '&')
 	{
 		count++;
 		temp = temp->next;
@@ -131,4 +116,3 @@ t_cl	*parse_command_line(t_list *token_list)
 		cl->and_cl = parse_command_line(temp->next);
 	return (cl);
 }
-

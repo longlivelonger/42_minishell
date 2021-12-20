@@ -1,3 +1,14 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   build_stree.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: dweeper <marvin@42.fr>                     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/12/09 17:18:30 by dweeper           #+#    #+#             */
+/*   Updated: 2021/12/09 18:19:19 by dweeper          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "minishell.h"
 
@@ -5,20 +16,22 @@ static pid_t	launch_command(t_com *command, int fd_in, int fd_out)
 {
 	pid_t	fork_return;
 
-	fd_in = ext_open(command->in, fd_in, 0, command->in_flag, command->out_flag);
-	fd_out = ext_open(command->out, fd_out, 1, command->in_flag, command->out_flag);
-	if ((fork_return = find_command(&command->command_path, command->args_array)) == -1)
+	fd_in = ext_open(command->in, fd_in, 0,
+			command->in_flag, command->out_flag);
+	fd_out = ext_open(command->out, fd_out, 1,
+			command->in_flag, command->out_flag);
+	fork_return = find_command(&command->command_path, command->args_array);
+	if (fork_return == -1)
 		printf("%s: command not found\n", command->command_path);
 	else if (!fork_return)
 		run_builtin(command->args_array);
 	else
 	{
-		if ((fork_return = fork()) == -1)
+		fork_return = fork();
+		if (fork_return == -1)
 			perror("fork");
 		else if (fork_return == 0)
 		{
-			//ext_pipe_close(pipe_in, 1);
-			//ext_pipe_close(pipe_out, 0);
 			execve(command->command_path, command->args_array, NULL);
 			perror(command->command_path);
 			exit(1);
@@ -62,7 +75,6 @@ static int	launch_job(t_job *current_job, int fd_stdout)
 		g_global.exit_status = WEXITSTATUS(exit_status);
 	else
 		g_global.exit_status = 0;
-	//printf("%d\n", exit_status);
 	return (g_global.exit_status);
 }
 
@@ -101,6 +113,11 @@ int	parse_n_execute(char *str)
 	token_list = split_to_tokens(str);
 	if (!token_list)
 		return (-1);
+	if (check_syntax(token_list))
+	{
+		free_token_list(token_list);
+		return (-1);
+	}
 	cl_root = parse_command_line(token_list);
 	if (!cl_root)
 	{
