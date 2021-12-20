@@ -10,10 +10,10 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef S_TREE_H
-# define S_TREE_H
+#ifndef SYNTAX_TREE_H
+# define SYNTAX_TREE_H
 
-typedef struct	s_command
+typedef struct s_command
 {
 	char	*command_path;
 	char	**args_array;
@@ -23,13 +23,13 @@ typedef struct	s_command
 	int		out_flag;
 }	t_com;
 
-typedef struct	s_job
+typedef struct s_job
 {
 	struct s_command	*com;
 	struct s_job		*next_job;	
 }	t_job;
 
-typedef struct	s_command_line
+typedef struct s_command_line
 {
 	struct s_job			*job;
 	struct s_command_line	*and_cl;
@@ -44,5 +44,6 @@ void	free_syntax_tree(t_cl *cl);
 int		ext_close(int fd);
 int		ext_pipe_close(int pipe[2], int	end_to_close);
 int		ext_open(char *file, int fd, int end_to_open, int in_flag, int out_flag);
+int		dup_redirected_io(int (*fd_pipe)[2], int	mode);
 
 #endif

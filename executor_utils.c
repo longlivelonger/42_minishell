@@ -12,14 +12,20 @@
 
 #include	"minishell.h"
 
-int	get_env_key(char *str)
+int	dup_redirected_io(int (*fd_pipe)[2], int mode)
 {
-	int	count;
+	int	fd_pipe_1;
 
-	count = 0;
-	while (*(str + count) && *(str + count) != '=')
-		count++;
-	return (count);
+	if (mode)
+	{
+		fd_pipe_1 = pipe(*fd_pipe);
+		fd_pipe_1 = *fd_pipe[1];
+		dup2(fd_pipe_1, 1);
+		return (fd_pipe_1);
+	}
+	fd_pipe_1 = *fd_pipe[0];
+	dup2(fd_pipe_1, 0);
+	return (fd_pipe_1);
 }
 
 char	*find_env_value(char *key, int key_len, char **env, int *env_value_len)
@@ -28,7 +34,9 @@ char	*find_env_value(char *key, int key_len, char **env, int *env_value_len)
 
 	while (env)
 	{
-		env_key_len = get_env_key(*env);
+		env_key_len = 0;
+		while (*(*env + env_key_len) && *(*env + env_key_len) != '=')
+			env_key_len++;
 		if (env_key_len == key_len)
 		{
 			if (!ft_strncmp(key, *env, key_len))
@@ -64,7 +72,6 @@ int	ext_open(char *file, int fd, int end_to_open, int in_flag, int out_flag)
 {
 	int	temp_fd;
 
-	//(void)out_flag;
 	if (file)
 	{
 		temp_fd = fd;
@@ -79,7 +86,6 @@ int	ext_open(char *file, int fd, int end_to_open, int in_flag, int out_flag)
 		else
 		{
 			fd = open(file, O_WRONLY | O_CREAT | out_flag, S_IRUSR | S_IWUSR);
-			//fd = open(file, O_WRONLY | O_CREAT | O_APPEND, S_IRUSR | S_IWUSR);
 			dup2(fd, 1);
 			if (temp_fd != -1)
 				close(temp_fd);

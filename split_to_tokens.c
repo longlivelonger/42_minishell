@@ -34,48 +34,23 @@ static int	get_word(char **str, char **dst)
 	env_count = 0;
 	count = 0;
 	term_symbol = '\0';
-	//printf("%d \n", count);
-	while(*(*str + count) && (term_symbol || (!check_special_symbol(str) && *(*str + count) != ' ' && *(*str + count) != '	')))
+	while (*(*str + count) && (term_symbol || (!check_special_symbol(str)
+				&& *(*str + count) != ' ' && *(*str + count) != '	')))
 	{
-		if (*(*str + count) == '"' || *(*str + count) == 39)
-		{
-			if (*(*str + count) == term_symbol)
-				term_symbol = '\0';
-			else if (!term_symbol)
-			{
-				term_symbol = check_quoted_sequence(*str + count);
-				if (!term_symbol)
-					env_count++;
-			}
-		}
-		else if (*(*str + count) == '$' && term_symbol != 39)
-			env_count += count_env_value(*str + count + 1, &count);
-		else
-			env_count++;
+		env_count += count_quoted_expr(*str + count, &term_symbol, &count);
 		count++;
-		//env_count++;
 	}
-	//printf("%d %d\n", count, env_count);
 	*dst = malloc(sizeof(char) * (1 + env_count));
 	if (!(*dst))
 		return (-1);
 	adv_str_write(*str, *dst, count);
-	//printf("%s!\n", *dst);
-	//ft_strlcpy(new_word, *str, count + 1);
-	//*dst = new_word;
 	return (count);
 }
 
-char	check_special_symbol(char** str)
+char	check_special_symbol(char **str)
 {
 	if (**str == '|')
 		return ('|');
-	//else if (**str == '$')
-	//	return (ENV);
-	//else if (**str == 39)
-	//	return (S_QUOTE);
-	//else if (**str == '"')
-	//	return (D_QUOTE);
 	else if (**str == '<')
 	{
 		if ((*str + 1) && *(*str + 1) == '<')
