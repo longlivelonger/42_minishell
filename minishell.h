@@ -6,7 +6,7 @@
 /*   By: sbronwyn <sbronwyn@student.21-school.ru>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/10 16:54:44 by sbronwyn          #+#    #+#             */
-/*   Updated: 2021/12/17 13:16:31 by sbronwyn         ###   ########.fr       */
+/*   Updated: 2021/12/20 11:13:37 by sbronwyn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,8 @@
 # include "libft/libft.h"
 # include "syntax_tree.h"
 # include "tokens.h"
+
+# define MINISHELL_PROMPT "$ "
 
 typedef struct s_kv
 {
