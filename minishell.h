@@ -6,7 +6,7 @@
 /*   By: sbronwyn <sbronwyn@student.21-school.ru>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/10 16:54:44 by sbronwyn          #+#    #+#             */
-/*   Updated: 2021/12/20 11:13:37 by sbronwyn         ###   ########.fr       */
+/*   Updated: 2021/12/20 12:03:33 by sbronwyn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,5 +66,8 @@ t_kv	*create_env_variable(char *str);
 char	*get_env(char *name);
 int		is_valid_env_key(char *name);
 void	delete_env_variable(char *name);
+
+void	clear_global_n_exit(int exit_status);
+void	init_global(char **envp);
 
 #endif
