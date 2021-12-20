@@ -25,38 +25,44 @@ static t_token	*create_token(char *value, char type)
 	return (new_token);
 }
 
-static int	get_word(char **str, char **dst, int *token_flag)
+static int	get_word(char **str, char **dst)
 {
 	int		count;
 	int		env_count;
-	int		is_quoted;
-	char	*new_word;
 	char	term_symbol;
 
-	count = 0;
 	env_count = 0;
-	*token_flag = 0;
-	is_quoted = 0;
+	count = 0;
 	term_symbol = '\0';
-	while(*(*str + count) != '\0' && (term_symbol || (*(*str + count) != '|' && *(*str + count) != '>' &&
-			*(*str + count) != '<' && *(*str + count) != ' ' && *(*str + count) != '	')))
+	//printf("%d \n", count);
+	while(*(*str + count) && (term_symbol || (!check_special_symbol(str) && *(*str + count) != ' ' && *(*str + count) != '	')))
 	{
 		if (*(*str + count) == '"' || *(*str + count) == 39)
 		{
 			if (*(*str + count) == term_symbol)
 				term_symbol = '\0';
 			else if (!term_symbol)
+			{
 				term_symbol = check_quoted_sequence(*str + count);
+				if (!term_symbol)
+					env_count++;
+			}
 		}
 		else if (*(*str + count) == '$' && term_symbol != 39)
-			env_count += count_env_value(*str, &count);
+			env_count += count_env_value(*str + count + 1, &count);
+		else
+			env_count++;
 		count++;
+		//env_count++;
 	}
-	new_word = malloc(sizeof(char) * (count + 1));
-	if (!new_word)
+	//printf("%d %d\n", count, env_count);
+	*dst = malloc(sizeof(char) * (1 + env_count));
+	if (!(*dst))
 		return (-1);
-	ft_strlcpy(new_word, *str, count + 1);
-	*dst = new_word;
+	adv_str_write(*str, *dst, count);
+	//printf("%s!\n", *dst);
+	//ft_strlcpy(new_word, *str, count + 1);
+	//*dst = new_word;
 	return (count);
 }
 
@@ -64,22 +70,22 @@ char	check_special_symbol(char** str)
 {
 	if (**str == '|')
 		return ('|');
-	else if (**str == '$')
-		return (ENV);
+	//else if (**str == '$')
+	//	return (ENV);
 	//else if (**str == 39)
 	//	return (S_QUOTE);
 	//else if (**str == '"')
 	//	return (D_QUOTE);
 	else if (**str == '<')
 	{
-		if (*(*str + 1) == '<')
+		if ((*str + 1) && *(*str + 1) == '<')
 			return (REDIR_FROM_UNT);
 		else
 			return (REDIR_FROM);
 	}
 	else if (**str == '>')
 	{
-		if (*(*str + 1) == '>')
+		if ((*str + 1) && *(*str + 1) == '>')
 			return (REDIR_TO_APP);
 		else
 			return (REDIR_TO);
@@ -92,7 +98,6 @@ static t_list	*get_token(char **str)
 	t_token	*new_token;
 	char	token_type;
 	char	*value;
-	int		token_flag;
 	int		count;
 
 	count = 1;
@@ -100,9 +105,11 @@ static t_list	*get_token(char **str)
 	while (**str == ' ' || **str == '	')
 		(*str)++;
 	token_type = check_special_symbol(str);
+	if (token_type == 'G' || token_type == 'L')
+		count++;
 	if (!token_type)
 	{
-		count = get_word(str, &value, &token_flag);
+		count = get_word(str, &value);
 		token_type = WORD;
 	}
 	*str += count;

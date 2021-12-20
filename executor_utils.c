@@ -1,8 +1,21 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   lexer.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: dweeper <marvin@42.fr>                     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/12/09 15:54:29 by dweeper           #+#    #+#             */
+/*   Updated: 2021/12/09 17:17:26 by dweeper          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include	"minishell.h"
 
 int	get_env_key(char *str)
 {
 	int	count;
+
 	count = 0;
 	while (*(str + count) && *(str + count) != '=')
 		count++;
@@ -51,6 +64,7 @@ int	ext_open(char *file, int fd, int end_to_open, int in_flag, int out_flag)
 {
 	int	temp_fd;
 
+	//(void)out_flag;
 	if (file)
 	{
 		temp_fd = fd;
@@ -65,6 +79,7 @@ int	ext_open(char *file, int fd, int end_to_open, int in_flag, int out_flag)
 		else
 		{
 			fd = open(file, O_WRONLY | O_CREAT | out_flag, S_IRUSR | S_IWUSR);
+			//fd = open(file, O_WRONLY | O_CREAT | O_APPEND, S_IRUSR | S_IWUSR);
 			dup2(fd, 1);
 			if (temp_fd != -1)
 				close(temp_fd);
