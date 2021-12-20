@@ -24,6 +24,7 @@
 # include <sys/types.h>
 # include <sys/param.h>
 # include <dirent.h>
+# include <errno.h>
 
 # include "libft/libft.h"
 # include "syntax_tree.h"
