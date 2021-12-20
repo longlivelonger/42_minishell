@@ -22,9 +22,9 @@ static pid_t	launch_command(t_com *command, int fd_in, int fd_out)
 			command->in_flag, command->out_flag);
 	fork_return = find_command(&command->command_path, command->args_array);
 	if (fork_return == -1)
-		printf("%s: command not found\n", command->command_path);
+		fork_return = command_nfound_err(command->command_path);
 	else if (!fork_return)
-		run_builtin(command->args_array);
+		fork_return = launch_buildin(command->args_array);
 	else
 	{
 		fork_return = fork();
@@ -71,11 +71,7 @@ static int	launch_job(t_job *current_job, int fd_stdout)
 		current_job = current_job->next_job;
 	}
 	waitpid(command_pid, &exit_status, 0);
-	if (WIFEXITED(exit_status))
-		g_global.exit_status = WEXITSTATUS(exit_status);
-	else
-		g_global.exit_status = 0;
-	return (g_global.exit_status);
+	return (check_exit_status(exit_status, command_pid));
 }
 
 int	execute_syntax_tree(t_cl *current_cl)

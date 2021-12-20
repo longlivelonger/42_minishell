@@ -45,5 +45,8 @@ int		ext_close(int fd);
 int		ext_pipe_close(int pipe[2], int	end_to_close);
 int		ext_open(char *file, int fd, int end_to_open, int in_flag, int out_flag);
 int		dup_redirected_io(int (*fd_pipe)[2], int	mode);
+int		launch_buildin(char **args);
+int		command_nfound_err(char *name);
+int		check_exit_status(int exit_status, int launch_return);
 
 #endif

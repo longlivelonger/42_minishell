@@ -23,6 +23,7 @@
 # include <sys/stat.h>
 # include <sys/types.h>
 # include <dirent.h>
+# include <errno.h>
 
 # include "libft/libft.h"
 # include "syntax_tree.h"
