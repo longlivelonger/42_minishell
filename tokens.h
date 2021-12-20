@@ -33,9 +33,12 @@ typedef struct	s_token
 }			t_token;
 
 t_list	*split_to_tokens(char *str);
-int		get_env_key(char *str);
+//int		get_env_key(char *str);
 int		count_env_value(char *key, int *count);
 int		ft_strlen_adpt(char	*str);
+int		check_syntax(t_list *token_list);
+int		count_quoted_expr(char *str, char *term_symbol, int	*count);
+int		build_redirections(char type, t_com *new_command, t_list **token_list);
 char	*find_env_value(char *key, int key_len, char **env, int *env_value_len);
 char	check_quoted_sequence(char* str);
 char	check_special_symbol(char** str);
