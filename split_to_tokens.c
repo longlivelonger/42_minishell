@@ -81,6 +81,8 @@ static t_list	*get_token(char **str)
 	value = NULL;
 	while (**str == ' ' || **str == '	')
 		(*str)++;
+	if (!(**str))
+		return (NULL);
 	token_type = check_special_symbol(*str);
 	if (token_type == 'G' || token_type == 'L')
 		count++;
@@ -103,7 +105,8 @@ t_list	*split_to_tokens(char *str)
 	while (*str)
 	{
 		new_token = get_token(&str);
-		ft_lstadd_back(&token_list, new_token);
+		if (new_token)
+			ft_lstadd_back(&token_list, new_token);
 	}
 	return (token_list);
 }
