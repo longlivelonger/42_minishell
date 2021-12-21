@@ -6,7 +6,7 @@
 /*   By: sbronwyn <sbronwyn@student.21-school.ru>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/20 12:03:05 by sbronwyn          #+#    #+#             */
-/*   Updated: 2021/12/20 12:09:43 by sbronwyn         ###   ########.fr       */
+/*   Updated: 2021/12/21 15:08:34 by sbronwyn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 void	clear_global_n_exit(int exit_status)
 {
 	ft_lstclear(&g_global.env, &delete_env_content);
+	rl_clear_history();
 	exit(exit_status);
 }
 

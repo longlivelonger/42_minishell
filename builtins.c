@@ -6,7 +6,7 @@
 /*   By: sbronwyn <sbronwyn@student.21-school.ru>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/11 15:25:18 by sbronwyn          #+#    #+#             */
-/*   Updated: 2021/12/17 11:40:13 by sbronwyn         ###   ########.fr       */
+/*   Updated: 2021/12/21 14:07:49 by sbronwyn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,33 +71,6 @@ void	builtin_echo(char **args)
 	}
 	if (print_nl)
 		write(1, "\n", 1);
-}
-
-void	builtin_cd(char **args)
-{
-	char	*home;
-
-	if (args == 0 || args[0] == 0 || ft_strncmp(args[0], "cd", 3) != 0)
-		return ;
-	if (args[1] == 0)
-	{
-		home = get_env("HOME");
-		if (home == 0)
-		{
-			write(2, "cd: HOME not set\n", 17);
-			g_global.exit_status = 1;
-		}
-		else if (chdir(home) == -1)
-		{
-			perror("cd");
-			g_global.exit_status = 1;
-		}
-	}
-	else if (chdir(args[1]) == -1)
-	{
-		perror("cd");
-		g_global.exit_status = 1;
-	}
 }
 
 void	builtin_pwd(char **args)

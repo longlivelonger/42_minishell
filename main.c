@@ -6,7 +6,7 @@
 /*   By: sbronwyn <sbronwyn@student.21-school.ru>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/09 15:17:42 by sbronwyn          #+#    #+#             */
-/*   Updated: 2021/12/20 12:03:22 by sbronwyn         ###   ########.fr       */
+/*   Updated: 2021/12/21 15:07:45 by sbronwyn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,10 +25,7 @@ int	main(int argc, char **argv, char **envp)
 		command_line = 0;
 		command_line = readline(MINISHELL_PROMPT);
 		if (command_line == 0)
-		{
-			rl_clear_history();
 			clear_global_n_exit(0);
-		}
 		if (command_line != 0 && ft_strlen(command_line) > 0)
 		{
 			add_history(command_line);
