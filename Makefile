@@ -18,7 +18,7 @@ LIBFLAGS= -Llibft -lft \
 	-L/Users/$$USER/.brew/Cellar/readline/8.1.1/lib -lreadline
 
 SRC_DWEEPER = build_syntax_tree.c split_to_tokens.c execute_command.c executor_utils.c \
-		parser_memory_cleanup.c split_to_tokens_utils.c find_command.c parser_utils.c executor_utils_2.c
+		parser_memory_cleanup.c split_to_tokens_utils.c find_command.c parser_utils.c executor_utils_2.c executor_utils_3.c
 
 SRC = main.c $(SRC_DWEEPER) \
 	signal.c builtins.c builtins2.c env.c env_utils.c global.c

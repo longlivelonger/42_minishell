@@ -34,7 +34,7 @@ static int	get_word(char **str, char **dst)
 	env_count = 0;
 	count = 0;
 	term_symbol = '\0';
-	while (*(*str + count) && (term_symbol || (!check_special_symbol(str)
+	while (*(*str + count) && (term_symbol || (!check_special_symbol(*str + count)
 				&& *(*str + count) != ' ' && *(*str + count) != '	')))
 	{
 		env_count += count_quoted_expr(*str + count, &term_symbol, &count);
@@ -47,20 +47,22 @@ static int	get_word(char **str, char **dst)
 	return (count);
 }
 
-char	check_special_symbol(char **str)
+char	check_special_symbol(char *str)
 {
-	if (**str == '|')
+	if (*str == '|')
 		return ('|');
-	else if (**str == '<')
+	else if (*str == ';')
+		return (';');
+	else if (*str == '<')
 	{
-		if ((*str + 1) && *(*str + 1) == '<')
+		if ((str + 1) && *(str + 1) == '<')
 			return (REDIR_FROM_UNT);
 		else
 			return (REDIR_FROM);
 	}
-	else if (**str == '>')
+	else if (*str == '>')
 	{
-		if ((*str + 1) && *(*str + 1) == '>')
+		if ((str + 1) && *(str + 1) == '>')
 			return (REDIR_TO_APP);
 		else
 			return (REDIR_TO);
@@ -79,7 +81,7 @@ static t_list	*get_token(char **str)
 	value = NULL;
 	while (**str == ' ' || **str == '	')
 		(*str)++;
-	token_type = check_special_symbol(str);
+	token_type = check_special_symbol(*str);
 	if (token_type == 'G' || token_type == 'L')
 		count++;
 	if (!token_type)

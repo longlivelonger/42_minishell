@@ -55,7 +55,38 @@ int	check_exit_status(int exit_status, int launch_return)
 	}
 	if (WIFEXITED(exit_status))
 		g_global.exit_status = WEXITSTATUS(exit_status);
-	else
-		g_global.exit_status = 0;
 	return (0);
+}
+
+int	open_input_stream(char *file, int fd, int in_flag)
+{
+	int	temp_fd;
+
+	if (file)
+	{
+		temp_fd = fd;
+		if (in_flag)
+			fd = open_here_doc(file);
+		else
+			fd = open(file, O_RDONLY);
+		dup2(fd, 0);
+		if (temp_fd != -1)
+			close(temp_fd);
+	}
+	return (fd);
+}
+
+int	open_output_stream(char *file, int fd, int out_flag)
+{
+	int	temp_fd;
+
+	if (file)
+	{
+		temp_fd = fd;
+		fd = open(file, O_WRONLY | O_CREAT | out_flag, S_IRUSR | S_IWUSR);
+		dup2(fd, 1);
+		if (temp_fd != -1)
+			close(temp_fd);
+	}
+	return (fd);
 }

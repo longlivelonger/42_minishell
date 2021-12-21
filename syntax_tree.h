@@ -16,6 +16,7 @@
 typedef struct s_command
 {
 	char	*command_path;
+	char	is_path_alloc;
 	char	**args_array;
 	char	*in;
 	int		in_flag;
@@ -38,13 +39,18 @@ typedef struct s_command_line
 
 t_cl	*parse_command_line(t_list *token_list);
 int		execute_syntax_tree(t_cl *current_cl);
-int		find_command(char **path_name, char **com_name);
+int		find_command(char **path_name, char **com_name, char *isa);
 int		parse_n_execute(char *str);
 void	free_syntax_tree(t_cl *cl);
+void	free_kostyl(t_com *com);
 int		ext_close(int fd);
 int		ext_pipe_close(int pipe[2], int	end_to_close);
-int		ext_open(char *file, int fd, int end_to_open, int in_flag, int out_flag);
+//int		ext_open(char *file, int fd, int end_to_open, int in_flag, int out_flag);
+int		open_input_stream(char *file, int fd, int in_flag);
+int		open_output_stream(char *file, int fd, int out_flag);
 int		dup_redirected_io(int (*fd_pipe)[2], int	mode);
+int	open_here_doc(char *delim);
+int	read_file_err(t_com *command, int *fd_out, int *fd_in);
 int		launch_buildin(char **args);
 int		command_nfound_err(char *name);
 int		check_exit_status(int exit_status, int launch_return);

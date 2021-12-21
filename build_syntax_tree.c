@@ -40,6 +40,7 @@ static t_com	*init_command(void)
 
 	new_command = malloc(sizeof(t_com));
 	new_command->command_path = NULL;
+	new_command->is_path_alloc = 0;
 	new_command->in = NULL;
 	new_command->out = NULL;
 	new_command->in_flag = 0;

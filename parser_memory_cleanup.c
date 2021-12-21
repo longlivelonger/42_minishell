@@ -20,8 +20,8 @@ static t_job	*free_job(t_job *job)
 {
 	t_job	*temp_job;
 
-	//if (job->com->command_path)
-	//	free(job->com->command_path);
+	if (job->com->is_path_alloc)
+		free(job->com->command_path);
 	//if (job->com->in)
 	//	free(job->com->in);
 	//if (job->com->out)

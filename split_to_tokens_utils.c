@@ -54,7 +54,7 @@ int	count_env_value(char *key, int *count)
 
 	key_len = 0;
 	if ((key + key_len) && ((*(key + key_len) >= 48 && *(key + key_len) <= 57)))
-		return (1);
+		return (3);
 	while ((key + key_len) && ((*(key + key_len) >= 97
 				&& *(key + key_len) <= 122)
 			|| (*(key + key_len) >= 65 && *(key + key_len) <= 90)))
@@ -79,13 +79,12 @@ int	build_redirections(char type, t_com *new_command, t_list **token_list)
 		new_command->out = ((t_token *)(*token_list)->content)->value;
 		return (1);
 	}
-	else if (((t_token *)(*token_list)->content)->type == '<'
-		|| ((t_token *)(*token_list)->content)->type == 'L')
+	else if (type == '<' || type == 'L')
 	{
+		if (type == 'L')
+			new_command->in_flag = 1;
 		(*token_list) = (*token_list)->next;
 		new_command->in = ((t_token *)(*token_list)->content)->value;
-		if (((t_token *)(*token_list)->content)->type == 'L')
-			new_command->in_flag = 1;
 		return (1);
 	}
 	return (0);

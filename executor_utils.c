@@ -52,7 +52,7 @@ char	*find_env_value(char *key, int key_len, char **env, int *env_value_len)
 	return (NULL);
 }
 
-int	ext_close(int	fd)
+int	ext_close(int fd)
 {
 	if (fd != -1)
 		return (close(fd));
@@ -68,28 +68,34 @@ int	ext_pipe_close(int pipe[2], int	end_to_close)
 		return (pipe[0]);
 }
 
-int	ext_open(char *file, int fd, int end_to_open, int in_flag, int out_flag)
+int	open_here_doc(char *delim)
 {
-	int	temp_fd;
+	char	c[256];
+	int		count;
+	int		delim_count;
+	int		max_count;
+	int		fd_pipe[2];
 
-	if (file)
+	count = 0;
+	delim_count = 0;
+	max_count = ft_strlen(delim);
+	pipe(fd_pipe);
+	while (read(0, c + count, 1))
 	{
-		temp_fd = fd;
-		if (end_to_open == 0)
-		{	
-			(void) in_flag;
-			fd = open(file, O_RDONLY);
-			dup2(fd, 0);
-			if (temp_fd != -1)
-				close(temp_fd);
-		}
-		else
+		count++;
+		if (*(c + count - 1) == '\n')
 		{
-			fd = open(file, O_WRONLY | O_CREAT | out_flag, S_IRUSR | S_IWUSR);
-			dup2(fd, 1);
-			if (temp_fd != -1)
-				close(temp_fd);
+			if (delim_count == max_count)
+				break;
+			write(fd_pipe[1], c, count);
+			count = 0;
+			delim_count = 0;
 		}
+		else if (*(c + count - 1) == *(delim + delim_count) && count < (max_count + 1))
+			delim_count++;
+		else
+			delim_count = 0;
 	}
-	return (fd);
+	close(fd_pipe[1]);
+	return (fd_pipe[0]);
 }

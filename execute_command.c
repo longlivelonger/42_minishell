@@ -12,19 +12,17 @@
 
 #include "minishell.h"
 
-static pid_t	launch_command(t_com *command, int fd_in, int fd_out)
+static pid_t	launch_command(t_com *com, int fd_in, int fd_out)
 {
 	pid_t	fork_return;
 
-	fd_in = ext_open(command->in, fd_in, 0,
-			command->in_flag, command->out_flag);
-	fd_out = ext_open(command->out, fd_out, 1,
-			command->in_flag, command->out_flag);
-	fork_return = find_command(&command->command_path, command->args_array);
+	if (read_file_err(com, &fd_out, &fd_in))
+		return (-1);
+	fork_return = find_command(&com->command_path, com->args_array, &com->is_path_alloc);
 	if (fork_return == -1)
-		fork_return = command_nfound_err(command->command_path);
+		fork_return = command_nfound_err(com->command_path);
 	else if (!fork_return)
-		fork_return = launch_buildin(command->args_array);
+		fork_return = launch_buildin(com->args_array);
 	else
 	{
 		fork_return = fork();
@@ -32,10 +30,11 @@ static pid_t	launch_command(t_com *command, int fd_in, int fd_out)
 			perror("fork");
 		else if (fork_return == 0)
 		{
-			execve(command->command_path, command->args_array, NULL);
-			perror(command->command_path);
+			execve(com->command_path, com->args_array, NULL);
+			perror(com->command_path);
 			exit(1);
 		}
+		//free_kostyl(command);
 	}
 	ext_close(fd_in);
 	ext_close(fd_out);
