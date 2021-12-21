@@ -6,7 +6,7 @@
 /*   By: sbronwyn <sbronwyn@student.21-school.ru>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/10 16:54:44 by sbronwyn          #+#    #+#             */
-/*   Updated: 2021/12/21 14:08:50 by sbronwyn         ###   ########.fr       */
+/*   Updated: 2021/12/21 14:44:33 by sbronwyn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,7 @@ void	print_sorted_env(void);
 t_kv	*create_env_variable(char *str);
 
 char	*get_env(char *name);
+int		set_env(char *name, char *value);
 int		is_valid_env_key(char *name);
 void	delete_env_variable(char *name);
 

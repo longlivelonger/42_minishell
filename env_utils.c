@@ -6,7 +6,7 @@
 /*   By: sbronwyn <sbronwyn@student.21-school.ru>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/15 17:17:23 by sbronwyn          #+#    #+#             */
-/*   Updated: 2021/12/17 12:55:03 by sbronwyn         ###   ########.fr       */
+/*   Updated: 2021/12/21 14:58:28 by sbronwyn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,23 @@ char	*get_env(char *name)
 		current = current->next;
 	}
 	return (0);
+}
+
+int	set_env(char *name, char *value)
+{
+	t_kv	*kv;
+
+	kv = malloc(sizeof(*kv));
+	if (kv == 0)
+		return (0);
+	kv->name = name;
+	kv->value = value;
+	delete_env_variable(kv->name);
+	if (g_global.env == 0)
+		g_global.env = ft_lstnew(kv);
+	else
+		ft_lstadd_back(&g_global.env, ft_lstnew(kv));
+	return (1);
 }
 
 int	is_valid_env_key(char *name)

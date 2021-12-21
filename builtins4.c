@@ -6,7 +6,7 @@
 /*   By: sbronwyn <sbronwyn@student.21-school.ru>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/21 14:07:39 by sbronwyn          #+#    #+#             */
-/*   Updated: 2021/12/21 14:27:43 by sbronwyn         ###   ########.fr       */
+/*   Updated: 2021/12/21 14:59:00 by sbronwyn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,31 +35,49 @@ static char	*process_path(char **path)
 	return (*path);
 }
 
+static void	cd_to_home(void)
+{
+	char	*oldpwd;
+
+	oldpwd = getcwd(0, 0);
+	if (get_env("HOME") == 0)
+	{
+		write(2, "cd: HOME not set\n", 17);
+		g_global.exit_status = 1;
+		return ;
+	}
+	else if (chdir(get_env("HOME")) == -1)
+	{
+		perror("cd");
+		g_global.exit_status = 1;
+		return ;
+	}
+	set_env("OLDPWD", oldpwd);
+	set_env("PWD", getcwd(0, 0));
+}
+
 void	builtin_cd(char **args)
 {
 	char	*path;
+	char	*oldpwd;
 
 	if (args == 0 || args[0] == 0 || ft_strncmp(args[0], "cd", 3) != 0)
 		return ;
 	if (args[1] == 0)
 	{
-		if (get_env("HOME") == 0)
-		{
-			write(2, "cd: HOME not set\n", 17);
-			g_global.exit_status = 1;
-		}
-		else if (chdir(get_env("HOME")) == -1)
-		{
-			perror("cd");
-			g_global.exit_status = 1;
-		}
+		cd_to_home();
 		return ;
 	}
+	oldpwd = getcwd(0, 0);
 	path = ft_strdup(args[1]);
 	if (chdir(process_path(&path)) == -1)
 	{
 		perror("cd");
 		g_global.exit_status = 1;
+		free(path);
+		return ;
 	}
+	set_env(ft_strdup("OLDPWD"), oldpwd);
+	set_env(ft_strdup("PWD"), getcwd(0, 0));
 	free(path);
 }

@@ -6,7 +6,7 @@
 /*   By: sbronwyn <sbronwyn@student.21-school.ru>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/14 15:36:57 by sbronwyn          #+#    #+#             */
-/*   Updated: 2021/12/17 12:54:38 by sbronwyn         ###   ########.fr       */
+/*   Updated: 2021/12/21 14:53:18 by sbronwyn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@ void	delete_env_content(void *content)
 	var = (t_kv *)content;
 	if (var != 0 && var->name != 0)
 		free(var->name);
+	if (var != 0 && var->value != 0)
+		free(var->value);
 	if (var != 0)
 		free(var);
 }
@@ -94,7 +96,7 @@ t_kv	*create_env_variable(char *str)
 	var->value = 0;
 	if (ft_strchr(var->name, '='))
 	{
-		var->value = ft_strchr(var->name, '=') + 1;
+		var->value = ft_strdup(ft_strchr(var->name, '=') + 1);
 		*ft_strchr(var->name, '=') = '\0';
 	}
 	return (var);
