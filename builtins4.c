@@ -6,7 +6,7 @@
 /*   By: sbronwyn <sbronwyn@student.21-school.ru>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/21 14:07:39 by sbronwyn          #+#    #+#             */
-/*   Updated: 2021/12/21 14:59:00 by sbronwyn         ###   ########.fr       */
+/*   Updated: 2021/12/21 15:16:49 by sbronwyn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,16 +44,18 @@ static void	cd_to_home(void)
 	{
 		write(2, "cd: HOME not set\n", 17);
 		g_global.exit_status = 1;
+		free(oldpwd);
 		return ;
 	}
 	else if (chdir(get_env("HOME")) == -1)
 	{
 		perror("cd");
 		g_global.exit_status = 1;
+		free(oldpwd);
 		return ;
 	}
-	set_env("OLDPWD", oldpwd);
-	set_env("PWD", getcwd(0, 0));
+	set_env(ft_strdup("OLDPWD"), oldpwd);
+	set_env(ft_strdup("PWD"), getcwd(0, 0));
 }
 
 void	builtin_cd(char **args)
@@ -75,6 +77,7 @@ void	builtin_cd(char **args)
 		perror("cd");
 		g_global.exit_status = 1;
 		free(path);
+		free(oldpwd);
 		return ;
 	}
 	set_env(ft_strdup("OLDPWD"), oldpwd);
