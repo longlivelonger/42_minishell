@@ -6,7 +6,7 @@
 /*   By: sbronwyn <sbronwyn@student.21-school.ru>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/10 16:54:44 by sbronwyn          #+#    #+#             */
-/*   Updated: 2021/12/20 12:03:33 by sbronwyn         ###   ########.fr       */
+/*   Updated: 2021/12/21 13:10:54 by sbronwyn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,10 +55,11 @@ void	builtin_echo(char **args);
 void	builtin_cd(char **args);
 void	builtin_pwd(char **args);
 
-void	builtin_exit(char **args);
 void	builtin_export(char **args);
 void	builtin_unset(char **args);
 void	builtin_env(char **args);
+
+void	builtin_exit(char **args);
 
 void	delete_env_content(void *content);
 void	print_sorted_env(void);
