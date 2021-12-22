@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins3.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sbronwyn <sbronwyn@student.21-school.ru>   +#+  +:+       +#+        */
+/*   By: sbronwyn <sbronwyn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/21 13:10:22 by sbronwyn          #+#    #+#             */
-/*   Updated: 2021/12/21 13:52:34 by sbronwyn         ###   ########.fr       */
+/*   Updated: 2021/12/22 14:18:02 by sbronwyn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ void	builtin_exit(char **args)
 		num = get_exit_status(args[1]);
 		if (num == -1)
 		{
-			ft_putstr_fd("exit: ", 2);
+			ft_putstr_fd("minishell: exit: ", 2);
 			ft_putstr_fd(args[1], 2);
 			ft_putstr_fd(": numeric argument required\n", 2);
 			clear_global_n_exit(255);
@@ -90,7 +90,7 @@ void	builtin_exit(char **args)
 		clear_global_n_exit(num);
 	else
 	{
-		ft_putstr_fd("exit: too many arguments\n", 2);
+		ft_putstr_fd("minishell: exit: too many arguments\n", 2);
 		g_global.exit_status = 1;
 	}
 }

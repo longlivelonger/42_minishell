@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins2.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sbronwyn <sbronwyn@student.21-school.ru>   +#+  +:+       +#+        */
+/*   By: sbronwyn <sbronwyn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/13 10:56:58 by sbronwyn          #+#    #+#             */
-/*   Updated: 2021/12/21 14:39:59 by sbronwyn         ###   ########.fr       */
+/*   Updated: 2021/12/22 14:16:53 by sbronwyn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ static int	not_valid_name(char *name, char *command)
 	if (!is_valid_env_key(name))
 	{
 		g_global.exit_status = 1;
+		ft_putstr_fd("minishell: ", 2);
 		ft_putstr_fd(command, 2);
 		ft_putstr_fd(": `", 2);
 		ft_putstr_fd(name, 2);
@@ -39,6 +40,7 @@ void	builtin_export(char **args)
 		kv = create_env_variable(args[0]);
 		if (kv == 0)
 		{
+			ft_putstr_fd("minishell: ", 2);
 			perror("export");
 			g_global.exit_status = 1;
 			continue ;

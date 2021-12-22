@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sbronwyn <sbronwyn@student.21-school.ru>   +#+  +:+       +#+        */
+/*   By: sbronwyn <sbronwyn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/11 15:25:18 by sbronwyn          #+#    #+#             */
-/*   Updated: 2021/12/21 14:07:49 by sbronwyn         ###   ########.fr       */
+/*   Updated: 2021/12/22 14:16:31 by sbronwyn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,6 +86,7 @@ void	builtin_pwd(char **args)
 	pwd = getcwd(0, 0);
 	if (pwd == 0)
 	{
+		ft_putstr_fd("minishell: ", 2);
 		perror("pwd");
 		g_global.exit_status = 1;
 		return ;
