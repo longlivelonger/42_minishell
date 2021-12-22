@@ -14,6 +14,7 @@
 
 int	command_nfound_err(char *name)
 {
+	write(2, "minishell: ", 11);
 	write(2, name, ft_strlen(name));
 	write(2, ": command not found\n", 20);
 	return (-2);

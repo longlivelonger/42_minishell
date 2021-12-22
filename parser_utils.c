@@ -12,22 +12,23 @@
 
 #include "minishell.h"
 
-int	check_syntax(t_list *token_list)
+int	check_syntax(t_list *t_list)
 {
 	char	lt;
 	int		is_err;
 
 	lt = 0;
 	is_err = 0;
-	while (token_list && is_err != 1)
+	while (t_list && is_err != 1)
 	{
-		if (((t_token *)token_list->content)->type == '|' && (lt == '|' || !lt))
+		if ((((t_token *)t_list->content)->type == '|' && (lt == '|' || !lt))
+			|| (((t_token *)t_list->content)->type == ';' && (lt == ';')))
 			is_err = 1;
-		if ((lt == '>' || lt == '<' || lt == 'L' || lt == 'G')
-			&& ((t_token *)token_list->content)->type != 'W')
+		else if ((lt == '>' || lt == '<' || lt == 'L' || lt == 'G')
+			&& ((t_token *)t_list->content)->type != 'W')
 			is_err = 1;
-		lt = ((t_token *)token_list->content)->type;
-		token_list = token_list->next;
+		lt = ((t_token *)t_list->content)->type;
+		t_list = t_list->next;
 	}
 	if (is_err || (lt == '>' || lt == '<' || lt == 'L' || lt == 'G'))
 	{

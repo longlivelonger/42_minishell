@@ -58,7 +58,7 @@ static int	search_directory(char *next_dir, char **path_name,
 	DIR				*dir;
 	struct dirent	*dir_info;
 
-	errno = 0;
+	result = 0;
 	dir = opendir(next_dir);
 	dir_info = readdir(dir);
 	while (dir && (dir_info))
@@ -69,13 +69,6 @@ static int	search_directory(char *next_dir, char **path_name,
 	}
 	closedir(dir);
 	free(next_dir);
-	if (errno)
-	{
-		write(2, "-minishell: ", 12);
-		write(2, next_dir, ft_strlen(next_dir));
-		perror(NULL);
-		return (-1);
-	}
 	return (result);
 }
 
@@ -93,11 +86,11 @@ static int	search_in_path(char **path_name, char *path, char *is_path_alloc)
 	while (result != 1 && next_dir)
 	{
 		result = search_directory(next_dir, path_name, is_path_alloc);
-		if (result == -1)
-			return (-1);
 		if (result != 1)
 			next_dir = get_dir_name(path, &dir_count);
 	}
+	if (!result)
+		return (-1);
 	return (result);
 }
 
