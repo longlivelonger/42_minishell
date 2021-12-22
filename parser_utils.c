@@ -108,8 +108,9 @@ void	adv_str_write(char *str, char *dst)
 	while (*(str + count) && (term_symbol || (!check_special_symbol(str + count)
 				&& *(str + count) != ' ' && *(str + count) != '	')))
 	{
-		if (*(str + count) == '"' || *(str + count) == 39)
-			term_symbol = term_symbol_kost(str + count, term_symbol);
+		if ((*(str + count) == '"' || *(str + count) == 39)
+			&& term_symbol_kost(str + count, &term_symbol))
+			;
 		else if (*(str + count) == '$' && term_symbol != 39)
 			count += write_env_value(str + count + 1, dst, &dst_count);
 		else
