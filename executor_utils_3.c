@@ -74,7 +74,7 @@ char	term_symbol_kost(char *str, char *term_symbol)
 
 int	is_letter(char c)
 {
-	if ((c >= 97 && c <= 122) || (c >= 65 && c <= 90))
+	if (ft_isalpha(c) || ft_isdigit(c) || c == '_')
 		return (1);
 	return (0);
 }

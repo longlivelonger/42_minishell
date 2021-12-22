@@ -41,16 +41,6 @@ int	check_syntax(t_list *t_list)
 	return (is_err);
 }
 
-int	extract_key(char *str)
-{
-	int	count;
-
-	count = 0;
-	while (*(str + count) && *(str + count) != '=')
-		count++;
-	return (count);
-}
-
 static int	check_env_status(char *dst, int *dst_count)
 {
 	char	*number;
@@ -68,6 +58,17 @@ static int	check_env_status(char *dst, int *dst_count)
 	return (1);
 }
 
+static int	check_special_env(char *dst, int *dst_count, char *key)
+{
+	if (key && (*key == '?' || ft_isdigit(*key)))
+	{
+		if (*key == '?')
+			check_env_status(dst, dst_count);
+		return (1);
+	}
+	return (0);
+}
+
 int	write_env_value(char *key, char *dst, int *dst_count)
 {
 	int		key_len;
@@ -75,8 +76,8 @@ int	write_env_value(char *key, char *dst, int *dst_count)
 	char	*value;
 
 	key_len = 0;
-	if ((key + key_len) && (*(key + key_len) == '?'))
-		return (check_env_status(dst, dst_count));
+	if (check_special_env(dst, dst_count, key))
+		return (1);
 	while ((key + key_len) && is_letter(*(key + key_len)))
 		key_len++;
 	if (key_len == 0)
