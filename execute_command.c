@@ -31,7 +31,7 @@ static pid_t	launch_command(t_com *com, int fd_in, int fd_out)
 			perror("fork");
 		else if (fork_return == 0)
 		{
-			execve(com->command_path, com->args_array, NULL);
+			execve(com->command_path, com->args_array, make_envp_array());
 			perror(com->command_path);
 			exit(1);
 		}

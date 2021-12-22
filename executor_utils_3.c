@@ -54,13 +54,22 @@ int	read_file_err(t_com *command, int *fd_out, int *fd_in)
 	return (0);
 }
 
-char	term_symbol_kost(char *str, char term_symbol)
+char	term_symbol_kost(char *str, char *term_symbol)
 {
-	if (*str == term_symbol)
-		return ('\0');
-	else if (!term_symbol)
-		return (check_quoted_sequence(str));
-	return (term_symbol);
+	if (*str == *term_symbol)
+	{
+		*term_symbol = '\0';
+		return (1);
+	}
+	else if (!(*term_symbol))
+	{
+		*term_symbol = check_quoted_sequence(str);
+		if (*term_symbol)
+			return (1);
+		else
+			return (0);
+	}
+	return (0);
 }
 
 int	is_letter(char c)
