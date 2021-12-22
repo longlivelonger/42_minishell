@@ -29,15 +29,15 @@ static int	get_word(char **str, char **dst)
 {
 	int		count;
 	int		env_count;
-	char	term_symbol;
+	char	term_sym;
 
 	env_count = 0;
 	count = 0;
-	term_symbol = '\0';
-	while (*(*str + count) && (term_symbol || (!check_special_symbol(*str + count)
+	term_sym = '\0';
+	while (*(*str + count) && (term_sym || (!check_special_symbol(*str + count)
 				&& *(*str + count) != ' ' && *(*str + count) != '	')))
 	{
-		env_count += count_quoted_expr(*str + count, &term_symbol, &count);
+		env_count += count_quoted_expr(*str + count, &term_sym, &count);
 		count++;
 	}
 	*dst = malloc(sizeof(char) * (1 + env_count));

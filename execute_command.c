@@ -18,7 +18,8 @@ static pid_t	launch_command(t_com *com, int fd_in, int fd_out)
 
 	if (read_file_err(com, &fd_out, &fd_in))
 		return (-1);
-	fork_return = find_command(&com->command_path, com->args_array, &com->is_path_alloc);
+	fork_return = find_command(&com->command_path,
+			com->args_array, &com->is_path_alloc);
 	if (fork_return == -1)
 		fork_return = command_nfound_err(com->command_path);
 	else if (!fork_return)
@@ -34,7 +35,6 @@ static pid_t	launch_command(t_com *com, int fd_in, int fd_out)
 			perror(com->command_path);
 			exit(1);
 		}
-		//free_kostyl(command);
 	}
 	ext_close(fd_in);
 	ext_close(fd_out);
@@ -53,18 +53,10 @@ static int	launch_job(t_job *current_job, int fd_stdout)
 	fd_pipe_in = -1;
 	while (current_job)
 	{
-		if (fd_pipe_out != -1)
-		{
-			fd_pipe_in = fd_pipe[0];
-			dup2(fd_pipe_in, 0);
-		}
-		if (current_job->next_job)
-		{
-			fd_pipe_out = pipe(fd_pipe);
-			fd_pipe_out = fd_pipe[1];
-			dup2(fd_pipe_out, 1);
-		}
-		else
+		if (dup_redirected_io(fd_pipe, &fd_pipe_out,
+				&fd_pipe_in, current_job->next_job))
+			break ;
+		if (!(current_job->next_job))
 			dup2(fd_stdout, 1);
 		command_pid = launch_command(current_job->com, fd_pipe_in, fd_pipe_out);
 		current_job = current_job->next_job;

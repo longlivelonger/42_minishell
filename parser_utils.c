@@ -24,7 +24,7 @@ int	check_syntax(t_list *token_list)
 		if (((t_token *)token_list->content)->type == '|' && (lt == '|' || !lt))
 			is_err = 1;
 		if ((lt == '>' || lt == '<' || lt == 'L' || lt == 'G')
-				&& ((t_token *)token_list->content)->type != 'W')
+			&& ((t_token *)token_list->content)->type != 'W')
 			is_err = 1;
 		lt = ((t_token *)token_list->content)->type;
 		token_list = token_list->next;
@@ -76,8 +76,8 @@ int	write_env_value(char *key, char *dst, int *dst_count)
 	key_len = 0;
 	if ((key + key_len) && (*(key + key_len) == '?'))
 		return (check_env_status(dst, dst_count));
-	while ((key + key_len) && ((*(key + key_len) >=  97 && *(key + key_len) <= 122) ||
-		(*(key + key_len) >=  65 && *(key + key_len) <= 90)))
+	while ((key + key_len) && ((*(key + key_len) >= 97 && *(key + key_len) <= 122)
+			|| (*(key + key_len) >= 65 && *(key + key_len) <= 90)))
 		key_len++;
 	if (key_len == 0)
 		return (0);
@@ -97,7 +97,6 @@ int	write_env_value(char *key, char *dst, int *dst_count)
 	return (key_len);
 }
 
-
 void	adv_str_write(char *str, char *dst, int max_count)
 {
 	int		count;
@@ -105,10 +104,10 @@ void	adv_str_write(char *str, char *dst, int max_count)
 	char	term_symbol;
 
 	count = 0;
-	(void)max_count;
 	dst_count = 0;
 	term_symbol = '\0';
-	while(*(str + count) && (term_symbol || (!check_special_symbol(str + count) && *(str + count) != ' ' && *(str + count) != '	')))
+	while (*(str + count) && (term_symbol || (!check_special_symbol(str + count)
+				&& *(str + count) != ' ' && *(str + count) != '	')))
 	{
 		if (*(str + count) == '"' || *(str + count) == 39)
 		{

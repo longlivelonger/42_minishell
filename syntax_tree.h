@@ -45,14 +45,15 @@ void	free_syntax_tree(t_cl *cl);
 void	free_kostyl(t_com *com);
 int		ext_close(int fd);
 int		ext_pipe_close(int pipe[2], int	end_to_close);
-//int		ext_open(char *file, int fd, int end_to_open, int in_flag, int out_flag);
 int		open_input_stream(char *file, int fd, int in_flag);
 int		open_output_stream(char *file, int fd, int out_flag);
-int		dup_redirected_io(int (*fd_pipe)[2], int	mode);
-int	open_here_doc(char *delim);
-int	read_file_err(t_com *command, int *fd_out, int *fd_in);
+int		dup_redirected_io(int (fd_pipe)[2], int *fd_pipe_out,
+			int *fd_pipe_in, t_job *is_next_job);
+int		open_here_doc(char *delim);
+int		read_file_err(t_com *command, int *fd_out, int *fd_in);
 int		launch_buildin(char **args);
 int		command_nfound_err(char *name);
 int		check_exit_status(int exit_status, int launch_return);
+int		ft_strcmp_u(char *str1, char *str2);
 
 #endif

@@ -12,6 +12,20 @@
 
 #include	"minishell.h"
 
+int	ft_strcmp_u(char *str1, char *str2)
+{
+	while (*str1 && *str2)
+	{
+		if (*str1 != *str2)
+			return (0);
+		str1++;
+		str2++;
+	}
+	if (*str1 != *str2)
+		return (0);
+	return (1);
+}
+
 static void	write_file_err(char *name)
 {
 	write(2, "-minishell: ", 12);
