@@ -6,7 +6,7 @@
 /*   By: sbronwyn <sbronwyn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/21 14:07:39 by sbronwyn          #+#    #+#             */
-/*   Updated: 2021/12/22 14:23:32 by sbronwyn         ###   ########.fr       */
+/*   Updated: 2021/12/22 16:10:39 by sbronwyn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,14 +37,10 @@ static char	*process_path(char **path)
 
 static void	cd_to_home(void)
 {
-	char	*oldpwd;
-
-	oldpwd = getcwd(0, 0);
 	if (get_env("HOME") == 0)
 	{
 		write(2, "minishell: cd: HOME not set\n", 17);
 		g_global.exit_status = 1;
-		free(oldpwd);
 		return ;
 	}
 	else if (chdir(get_env("HOME")) == -1)
@@ -52,10 +48,9 @@ static void	cd_to_home(void)
 		ft_putstr_fd("minishell: ", 2);
 		perror("cd");
 		g_global.exit_status = 1;
-		free(oldpwd);
 		return ;
 	}
-	set_env(ft_strdup("OLDPWD"), oldpwd);
+	set_env(ft_strdup("OLDPWD"), ft_strdup(get_env("PWD")));
 	set_env(ft_strdup("PWD"), getcwd(0, 0));
 }
 

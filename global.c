@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   global.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sbronwyn <sbronwyn@student.21-school.ru>   +#+  +:+       +#+        */
+/*   By: sbronwyn <sbronwyn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/20 12:03:05 by sbronwyn          #+#    #+#             */
-/*   Updated: 2021/12/21 15:08:34 by sbronwyn         ###   ########.fr       */
+/*   Updated: 2021/12/22 16:12:10 by sbronwyn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,4 +39,5 @@ void	init_global(char **envp)
 			ft_lstadd_back(&g_global.env, ft_lstnew(kv));
 		envp++;
 	}
+	delete_env_variable("OLDPWD");
 }
