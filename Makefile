@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: sbronwyn <sbronwyn@student.21-school.ru>   +#+  +:+       +#+         #
+#    By: sbronwyn <sbronwyn@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/12/10 18:11:01 by sbronwyn          #+#    #+#              #
-#    Updated: 2021/12/21 14:08:03 by sbronwyn         ###   ########.fr        #
+#    Updated: 2021/12/22 14:39:24 by sbronwyn         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,7 +22,7 @@ SRC_DWEEPER = build_syntax_tree.c split_to_tokens.c execute_command.c executor_u
 
 SRC = main.c $(SRC_DWEEPER) \
 	signal.c builtins.c builtins2.c builtins3.c builtins4.c \
-	env.c env_utils.c global.c
+	env.c env_utils.c env_array.c global.c
 
 SRC_TEST = execution_checker.c $(SRC_DWEEPER) signal.c builtins.c builtins2.c env.c env_utils.c
 NAME_TEST = test

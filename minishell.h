@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sbronwyn <sbronwyn@student.21-school.ru>   +#+  +:+       +#+        */
+/*   By: sbronwyn <sbronwyn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/10 16:54:44 by sbronwyn          #+#    #+#             */
-/*   Updated: 2021/12/21 14:44:33 by sbronwyn         ###   ########.fr       */
+/*   Updated: 2021/12/22 14:46:09 by sbronwyn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,5 +73,8 @@ void	delete_env_variable(char *name);
 
 void	clear_global_n_exit(int exit_status);
 void	init_global(char **envp);
+
+char	**make_envp_array(void);
+void	free_envp_array(char **envp);
 
 #endif
