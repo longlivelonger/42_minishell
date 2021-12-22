@@ -60,3 +60,13 @@ void	free_syntax_tree(t_cl *cl)
 		free(cl);
 	}
 }
+
+int	extract_key(char *str)
+{
+	int	count;
+
+	count = 0;
+	while (*(str + count) && *(str + count) != '=')
+		count++;
+	return (count);
+}
