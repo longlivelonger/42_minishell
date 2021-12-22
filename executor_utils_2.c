@@ -21,25 +21,14 @@ int	command_nfound_err(char *name)
 
 int	launch_buildin(char **args)
 {
-	int	status;
-
-	status = 0;
-	errno = 0;
-	g_global.exit_status = 0;
 	run_builtin(args);
-	if (errno)
-	{
-		write(2, "-minishell: ", 12);
-		write(2, args[0], ft_strlen(args[0]));
-		write(2, ": ", 2);
-		perror(args[1]);
-		status = -1;
-	}
-	return (status);
+	return (-3);
 }
 
 int	check_exit_status(int exit_status, int launch_return)
 {
+	if (launch_return == -3)
+		return (0);
 	if (launch_return == -2)
 	{
 		g_global.exit_status = 127;

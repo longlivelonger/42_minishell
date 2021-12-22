@@ -24,7 +24,7 @@ int	check_syntax(t_list *token_list)
 		if (((t_token *)token_list->content)->type == '|' && (lt == '|' || !lt))
 			is_err = 1;
 		if ((lt == '>' || lt == '<' || lt == 'L' || lt == 'G')
-				&& ((t_token *)token_list->content)->type != 'W')
+			&& ((t_token *)token_list->content)->type != 'W')
 			is_err = 1;
 		lt = ((t_token *)token_list->content)->type;
 		token_list = token_list->next;
@@ -32,7 +32,7 @@ int	check_syntax(t_list *token_list)
 	if (is_err || (lt == '>' || lt == '<' || lt == 'L' || lt == 'G'))
 	{
 		is_err = 1;
-		write(2, "-bash: syntax error near unexpected token `", 43);
+		write(2, "minishell: syntax error near unexpected token `", 47);
 		write(2, &lt, 1);
 		write(2, "'\n", 2);
 		g_global.exit_status = 2;
@@ -76,8 +76,7 @@ int	write_env_value(char *key, char *dst, int *dst_count)
 	key_len = 0;
 	if ((key + key_len) && (*(key + key_len) == '?'))
 		return (check_env_status(dst, dst_count));
-	while ((key + key_len) && ((*(key + key_len) >=  97 && *(key + key_len) <= 122) ||
-		(*(key + key_len) >=  65 && *(key + key_len) <= 90)))
+	while ((key + key_len) && is_letter(*(key + key_len)))
 		key_len++;
 	if (key_len == 0)
 		return (0);
@@ -97,26 +96,20 @@ int	write_env_value(char *key, char *dst, int *dst_count)
 	return (key_len);
 }
 
-
-void	adv_str_write(char *str, char *dst, int max_count)
+void	adv_str_write(char *str, char *dst)
 {
 	int		count;
 	int		dst_count;
 	char	term_symbol;
 
 	count = 0;
-	(void)max_count;
 	dst_count = 0;
 	term_symbol = '\0';
-	while(*(str + count) && (term_symbol || (!check_special_symbol(str + count) && *(str + count) != ' ' && *(str + count) != '	')))
+	while (*(str + count) && (term_symbol || (!check_special_symbol(str + count)
+				&& *(str + count) != ' ' && *(str + count) != '	')))
 	{
 		if (*(str + count) == '"' || *(str + count) == 39)
-		{
-			if (*(str + count) == term_symbol)
-				term_symbol = '\0';
-			else if (!term_symbol)
-				term_symbol = check_quoted_sequence(str + count);
-		}
+			term_symbol = term_symbol_kost(str + count, term_symbol);
 		else if (*(str + count) == '$' && term_symbol != 39)
 			count += write_env_value(str + count + 1, dst, &dst_count);
 		else

@@ -1,3 +1,14 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   lexer.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: dweeper <marvin@42.fr>                     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/12/09 15:54:29 by dweeper           #+#    #+#             */
+/*   Updated: 2021/12/09 17:17:26 by dweeper          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "minishell.h"
 
@@ -22,10 +33,6 @@ static t_job	*free_job(t_job *job)
 
 	if (job->com->is_path_alloc)
 		free(job->com->command_path);
-	//if (job->com->in)
-	//	free(job->com->in);
-	//if (job->com->out)
-	//	free(job->com->out);
 	if (job->com->args_array)
 		free(job->com->args_array);
 	if (job->com)

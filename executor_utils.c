@@ -12,20 +12,30 @@
 
 #include	"minishell.h"
 
-int	dup_redirected_io(int (*fd_pipe)[2], int mode)
+int	dup_redirected_io(int (fd_pipe)[2], int *fd_pipe_out,
+		int *fd_pipe_in, t_job *is_next_job)
 {
-	int	fd_pipe_1;
-
-	if (mode)
+	errno = 0;
+	if (*fd_pipe_out != -1)
 	{
-		fd_pipe_1 = pipe(*fd_pipe);
-		fd_pipe_1 = *fd_pipe[1];
-		dup2(fd_pipe_1, 1);
-		return (fd_pipe_1);
+		*fd_pipe_in = fd_pipe[0];
+		dup2(*fd_pipe_in, 0);
 	}
-	fd_pipe_1 = *fd_pipe[0];
-	dup2(fd_pipe_1, 0);
-	return (fd_pipe_1);
+	if (is_next_job)
+	{
+		*fd_pipe_out = pipe(fd_pipe);
+		*fd_pipe_out = fd_pipe[1];
+		dup2(*fd_pipe_out, 1);
+	}
+	if (errno)
+	{
+		write(2, "minishell: ", 11);
+		perror("dup2: ");
+		ext_close(*fd_pipe_in);
+		ext_close(*fd_pipe_out);
+		return (1);
+	}
+	return (0);
 }
 
 char	*find_env_value(char *key, int key_len, char **env, int *env_value_len)
@@ -60,41 +70,39 @@ int	ext_close(int fd)
 		return (fd);
 }
 
-int	ext_pipe_close(int pipe[2], int	end_to_close)
+static void	init_here_doc_vars(int count[2], int *max_count,
+	int fd_pipe[2], char *delim)
 {
-	if (pipe[0] != -1)
-		return (close(pipe[end_to_close]));
-	else
-		return (pipe[0]);
+	count[0] = 0;
+	count[1] = 0;
+	*max_count = ft_strlen(delim);
+	pipe(fd_pipe);
 }
 
 int	open_here_doc(char *delim)
 {
 	char	c[256];
-	int		count;
-	int		delim_count;
+	int		count[2];
 	int		max_count;
 	int		fd_pipe[2];
 
-	count = 0;
-	delim_count = 0;
-	max_count = ft_strlen(delim);
-	pipe(fd_pipe);
-	while (read(0, c + count, 1))
+	init_here_doc_vars(count, &max_count, fd_pipe, delim);
+	while (read(0, c + count[0], 1))
 	{
-		count++;
-		if (*(c + count - 1) == '\n')
+		count[0]++;
+		if (*(c + count[0] - 1) == '\n')
 		{
-			if (delim_count == max_count)
-				break;
-			write(fd_pipe[1], c, count);
-			count = 0;
-			delim_count = 0;
+			if (count[1] == max_count)
+				break ;
+			write(fd_pipe[1], c, count[0]);
+			count[0] = 0;
+			count[1] = 0;
 		}
-		else if (*(c + count - 1) == *(delim + delim_count) && count < (max_count + 1))
-			delim_count++;
+		else if (*(c + count[0] - 1) == *(delim + count[1])
+			&& count[0] < (max_count + 1))
+			count[1]++;
 		else
-			delim_count = 0;
+			count[1] = 0;
 	}
 	close(fd_pipe[1]);
 	return (fd_pipe[0]);

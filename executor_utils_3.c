@@ -12,9 +12,23 @@
 
 #include	"minishell.h"
 
+int	ft_strcmp_u(char *str1, char *str2)
+{
+	while (*str1 && *str2)
+	{
+		if (*str1 != *str2)
+			return (0);
+		str1++;
+		str2++;
+	}
+	if (*str1 != *str2)
+		return (0);
+	return (1);
+}
+
 static void	write_file_err(char *name)
 {
-	write(2, "-minishell: ", 12);
+	write(2, "minishell: ", 11);
 	write(2, name, ft_strlen(name));
 	perror(": ");
 }
@@ -37,5 +51,21 @@ int	read_file_err(t_com *command, int *fd_out, int *fd_in)
 		ext_close(*fd_out);
 		return (1);
 	}
+	return (0);
+}
+
+char	term_symbol_kost(char *str, char term_symbol)
+{
+	if (*str == term_symbol)
+		return ('\0');
+	else if (!term_symbol)
+		return (check_quoted_sequence(str));
+	return (term_symbol);
+}
+
+int	is_letter(char c)
+{
+	if ((c >= 97 && c <= 122) || (c >= 65 && c <= 90))
+		return (1);
 	return (0);
 }

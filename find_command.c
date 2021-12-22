@@ -12,20 +12,6 @@
 
 #include "minishell.h"
 
-static int	ft_strcmp_u(char *str1, char *str2)
-{
-	while (*str1 && *str2)
-	{
-		if (*str1 != *str2)
-			return (0);
-		str1++;
-		str2++;
-	}
-	if (*str1 != *str2)
-		return (0);
-	return (1);
-}
-
 static char	*get_dir_name(char *path, int *count)
 {
 	char	*dir_name;
@@ -47,7 +33,8 @@ static char	*get_dir_name(char *path, int *count)
 	return (dir_name);
 }
 
-static int	build_command_name(char *dir_name, char **com_name, char *is_path_alloc)
+static int	build_command_name(char *dir_name, char **com_name,
+	char *is_path_alloc)
 {
 	char	*full_path;
 	int		dir_name_l;
@@ -64,32 +51,55 @@ static int	build_command_name(char *dir_name, char **com_name, char *is_path_all
 	return (1);
 }
 
+static int	search_directory(char *next_dir, char **path_name,
+	char *is_path_alloc)
+{
+	int				result;
+	DIR				*dir;
+	struct dirent	*dir_info;
+
+	errno = 0;
+	dir = opendir(next_dir);
+	dir_info = readdir(dir);
+	while (dir && (dir_info))
+	{
+		if (ft_strcmp_u(*path_name, dir_info->d_name))
+			result = build_command_name(next_dir, path_name, is_path_alloc);
+		dir_info = readdir(dir);
+	}
+	closedir(dir);
+	free(next_dir);
+	if (errno)
+	{
+		write(2, "-minishell: ", 12);
+		write(2, next_dir, ft_strlen(next_dir));
+		perror(NULL);
+		return (-1);
+	}
+	return (result);
+}
+
 static int	search_in_path(char **path_name, char *path, char *is_path_alloc)
 {
 	int				dir_count;
 	int				result;
-	DIR				*dir;
-	struct dirent	*dir_info;
 	char			*next_dir;
 
 	dir_count = 0;
 	result = -1;
 	if (!path)
 		return (result);
-	while (result != 1 && (next_dir = get_dir_name(path, &dir_count)))
+	next_dir = get_dir_name(path, &dir_count);
+	while (result != 1 && next_dir)
 	{
-		dir = opendir(next_dir);
-		while (dir && (dir_info = readdir(dir)))
-		{
-			if(ft_strcmp_u(*path_name, dir_info->d_name))
-				result = build_command_name(next_dir, path_name, is_path_alloc);
-		}
-		closedir(dir);
-		free(next_dir);
+		result = search_directory(next_dir, path_name, is_path_alloc);
+		if (result == -1)
+			return (-1);
+		if (result != 1)
+			next_dir = get_dir_name(path, &dir_count);
 	}
 	return (result);
 }
-
 
 int	find_command(char **path_name, char **com_name, char *is_path_alloc)
 {
