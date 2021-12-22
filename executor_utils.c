@@ -29,7 +29,7 @@ int	dup_redirected_io(int (fd_pipe)[2], int *fd_pipe_out,
 	}
 	if (errno)
 	{
-		write(2, "-minishell: ", 12);
+		write(2, "minishell: ", 11);
 		perror("dup2: ");
 		ext_close(*fd_pipe_in);
 		ext_close(*fd_pipe_out);

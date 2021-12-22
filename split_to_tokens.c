@@ -43,7 +43,7 @@ static int	get_word(char **str, char **dst)
 	*dst = malloc(sizeof(char) * (1 + env_count));
 	if (!(*dst))
 		return (-1);
-	adv_str_write(*str, *dst, count);
+	adv_str_write(*str, *dst);
 	return (count);
 }
 

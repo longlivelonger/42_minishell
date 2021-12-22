@@ -42,6 +42,6 @@ char	*find_env_value(char *key, int key_len, char **env, int *env_value_len);
 char	check_quoted_sequence(char *str);
 char	check_special_symbol(char *str);
 void	free_token_list(t_list *tl);
-void	adv_str_write(char *str, char *dst, int max_count);
+void	adv_str_write(char *str, char *dst);
 
 #endif

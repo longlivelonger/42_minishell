@@ -55,5 +55,7 @@ int		launch_buildin(char **args);
 int		command_nfound_err(char *name);
 int		check_exit_status(int exit_status, int launch_return);
 int		ft_strcmp_u(char *str1, char *str2);
+char	term_symbol_kost(char *str, char term_symbol);
+int		is_letter(char c);
 
 #endif
