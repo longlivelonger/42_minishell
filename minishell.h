@@ -6,7 +6,7 @@
 /*   By: sbronwyn <sbronwyn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/10 16:54:44 by sbronwyn          #+#    #+#             */
-/*   Updated: 2021/12/22 14:46:09 by sbronwyn         ###   ########.fr       */
+/*   Updated: 2021/12/22 15:13:38 by sbronwyn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@
 # include "syntax_tree.h"
 # include "tokens.h"
 
-# define MINISHELL_PROMPT "$ "
+# define MINISHELL_PROMPT "minishell$ "
 
 typedef struct s_kv
 {

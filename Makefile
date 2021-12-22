@@ -6,7 +6,7 @@
 #    By: sbronwyn <sbronwyn@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/12/10 18:11:01 by sbronwyn          #+#    #+#              #
-#    Updated: 2021/12/22 14:39:24 by sbronwyn         ###   ########.fr        #
+#    Updated: 2021/12/22 15:12:49 by sbronwyn         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,16 +27,18 @@ SRC = main.c $(SRC_DWEEPER) \
 SRC_TEST = execution_checker.c $(SRC_DWEEPER) signal.c builtins.c builtins2.c env.c env_utils.c
 NAME_TEST = test
 
+HEADERS=minishell.h syntax_tree.h tokens.h
+
 LIBFT=libft/libft.a
 MAKE_LIBFT=make -C libft
 RM = rm -rf
 
 all: $(NAME)
 
-$(NAME): $(SRC:.c=.o) $(LIBFT)
+$(NAME): $(SRC:.c=.o) $(LIBFT) $(HEADERS)
 	$(CC) $(CFLAGS) -o $(NAME) $(SRC:.c=.o) $(LIBFLAGS)
 
-%.o: %.c minishell.h stree.h tokens.h Makefile
+%.o: %.c $(HEADERS)
 	$(CC) $(CFLAGS) -c -o $@ $<
 
 clean:
